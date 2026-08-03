@@ -12,7 +12,7 @@ Software Engineer • Java Developer • Embedded Systems • IoT • AI Enthusi
 
 ## 🚀 About Me
 
-🎓 Electrical & Electronics Engineering Student
+🎓 Electronics and Communication Engineering Student
 
 💻 Passionate about
 
