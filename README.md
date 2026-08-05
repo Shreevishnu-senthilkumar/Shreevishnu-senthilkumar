@@ -1,4 +1,4 @@
-<h1 align="center">Hi 👋, I'm Shreevishnu</h1>
+<h1 align="center">Hi 👋, I'm Shreevishnu R S</h1>
 <h3 align="center">I build software and embedded systems that connect hardware, data, and AI</h3>
 
 <p align="center">
