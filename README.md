@@ -8,12 +8,14 @@
 
 <div align="center">
   <details>
-    <summary><b>🎨 Click here to manually toggle / preview Light &amp; Dark Banners</b></summary>
+    <summary>
+      <img src="https://img.shields.io/badge/%F0%9F%8E%A8%20Theme%20Toggle-Click%20To%20Switch%20View-7C3AED?style=for-the-badge&logoColor=white" />
+    </summary>
     <br/>
-    <p><b>🌙 Dark Mode Banner:</b></p>
+    <p><b>🌙 Dark Mode Hero Banner:</b></p>
     <img src="./dark.svg" alt="Dark Mode Banner" width="100%" />
     <br/><br/>
-    <p><b>☀️ Light Mode Banner:</b></p>
+    <p><b>☀️ Light Mode Hero Banner:</b></p>
     <img src="./light.svg" alt="Light Mode Banner" width="100%" />
   </details>
 </div>
