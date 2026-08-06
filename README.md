@@ -1,76 +1,144 @@
-<h1 align="center">Hi 👋, I'm Shreevishnu R S</h1>
-<h3 align="center">I build software and embedded systems that connect hardware, data, and AI</h3>
+<div align="center">
+  <h1>Hi 👋, I'm Shreevishnu R S</h1>
+  <h3>Software & Embedded Systems Engineer | Hardware • Data • AI</h3>
 
-<p align="center">
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=20&pause=1000&center=true&vCenter=true&width=750&lines=Java+%7C+DSA+%7C+System+Design;Embedded+Systems+%2B+IoT+%2B+AI;Turning+Real-World+Problems+into+Working+Code" />
-</p>
+  <p>
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=18&pause=1000&color=38BDF8&center=true&vCenter=true&width=700&lines=Software+%26+Embedded+Systems+Engineer;Java+%7C+DSA+%7C+System+Design;Embedded+Linux+%2B+IoT+%2B+Edge+AI;Bridging+Hardware%2C+Data%2C+and+Intelligence" alt="Typing SVG" />
+  </p>
 
-<p align="center">
-<a href="https://linkedin.com/in/YOUR_LINKEDIN"><img src="https://skillicons.dev/icons?i=linkedin" width="40"/></a>
-<a href="mailto:YOUR_EMAIL@gmail.com"><img src="https://skillicons.dev/icons?i=gmail" width="40"/></a>
-</p>
+  <p>
+    <a href="https://linkedin.com/in/YOUR_LINKEDIN"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
+    <a href="mailto:YOUR_EMAIL@gmail.com"><img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
+    <a href="https://github.com/Shreevishnu-senthilkumar"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
+  </p>
+</div>
 
-## About Me
-
-I'm an Electronics and Communication Engineering student who ended up loving software more than the hardware I started with. I like building things that sit at the intersection of **embedded systems, IoT, and AI** — from an ESP32 pulling sensor data over Modbus to a computer vision pipeline searching CCTV footage in plain English. Right now I'm deepening my Java and system design skills while staying hands-on with embedded Linux and computer vision.
-
-**🎯 Currently open to:** Software Engineering internships/roles, and embedded-AI collaboration projects.
-
-## Tech Stack
-
-**Core**
-![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk)
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python)
-![C](https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c)
-![JavaScript](https://img.shields.io/badge/JavaScript-black?style=for-the-badge&logo=javascript)
-
-**Embedded & IoT**
-![ESP32](https://img.shields.io/badge/ESP32-black?style=for-the-badge&logo=espressif&logoColor=white)
-![STM32](https://img.shields.io/badge/STM32-03234B?style=for-the-badge&logo=stmicroelectronics&logoColor=white)
-![Arduino](https://img.shields.io/badge/Arduino-00979D?style=for-the-badge&logo=arduino&logoColor=white)
-![MQTT](https://img.shields.io/badge/MQTT-660066?style=for-the-badge&logo=mqtt&logoColor=white)
-![Modbus](https://img.shields.io/badge/Modbus-C1272D?style=for-the-badge&logoColor=white)
-
-**Web & Tools**
-![HTML](https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS](https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)
-![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
-![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
-![VSCode](https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white)
-![IntelliJ](https://img.shields.io/badge/IntelliJ-000000?style=for-the-badge&logo=intellijidea&logoColor=white)
-
-**Currently Exploring**
-![SpringBoot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
-![OpenCV](https://img.shields.io/badge/OpenCV-FFFFFF?style=for-the-badge&logo=opencv&logoColor=black)
-
-## Featured Projects
-
-### 🔹 [Natural Language CCTV Search](https://github.com/YOUR_GITHUB_USERNAME/REPO_NAME)
-An AI system that lets you search CCTV footage using plain English instead of scrubbing through hours of video — combines object detection with vision-language models to make surveillance footage actually searchable.
-**Tech:** YOLO • CLIP • DINO • OpenCV • Python
-
-### 🔹 [Industrial Energy Monitoring System](https://github.com/YOUR_GITHUB_USERNAME/REPO_NAME)
-Real-time energy monitoring for industrial equipment, pulling live data from field devices over RS485/Modbus and streaming it via MQTT — built to catch inefficiencies before they show up on the power bill.
-**Tech:** ESP32 • MQTT • RS485 • Modbus
-
-### 🔹 [Smart Classroom Automation](https://github.com/YOUR_GITHUB_USERNAME/REPO_NAME)
-Sensor-driven automation for lighting, fans, and occupancy in classrooms, aimed at cutting energy waste in spaces that are rarely fully occupied.
-**Tech:** ESP32 • Sensors • Arduino
-
-## GitHub Stats
-
-![](https://github-readme-stats.vercel.app/api?username=YOUR_GITHUB_USERNAME&show_icons=true&theme=tokyonight&hide_border=true)
-![](https://github-readme-stats.vercel.app/api/top-langs/?username=YOUR_GITHUB_USERNAME&layout=compact&theme=tokyonight&hide_border=true)
-
-![](https://streak-stats.demolab.com?user=YOUR_GITHUB_USERNAME&theme=tokyonight&hide_border=true)
-
-![](https://github-profile-trophy.vercel.app/?username=YOUR_GITHUB_USERNAME&theme=tokyonight&no-frame=true&column=7)
-
-![](https://github-readme-activity-graph.vercel.app/graph?username=YOUR_GITHUB_USERNAME&theme=tokyo-night)
+<br/>
 
 ---
 
-> "I build software that bridges hardware, AI, and real-world problems."
+## 📌 About Me
 
-⭐ If any of this is useful to you, a star on my repos goes a long way.
+I am an **Electronics and Communication Engineering** student passionate about software engineering, embedded systems, and artificial intelligence. My core expertise sits at the intersection of **hardware-software co-design**, **IoT telemetry**, and **vision AI systems**.
+
+From engineering firmware on microcontrollers (ESP32/STM32) streaming industrial Modbus telemetry over MQTT, to developing intelligent vision algorithms that index and query CCTV video using natural language, I build efficient, real-world solutions across the full technology stack.
+
+- ⚙️ **Core Focus:** Java Backend Architecture, System Design, Data Structures & Algorithms, Embedded C/C++
+- 🛰️ **IoT & Edge:** Real-time Telemetry, Industrial Protocols (Modbus RS485, MQTT), Microcontrollers
+- 🧠 **AI & Vision:** Multimodal Video Search (YOLO, CLIP, DINO), OpenCV, Edge AI Integration
+- 🎯 **Current Objective:** Open to **Software Engineering Internships / Full-Time Roles** and collaborative **Embedded AI / System Design** projects.
+
+---
+
+## 🛠️ Tech Stack & Capabilities
+
+<table>
+  <tr>
+    <td width="22%" valign="top"><b>Languages & Core</b></td>
+    <td>
+      <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" />
+      <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
+      <img src="https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white" />
+      <img src="https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=cplusplus&logoColor=white" />
+      <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" />
+    </td>
+  </tr>
+  <tr>
+    <td width="22%" valign="top"><b>Embedded & IoT</b></td>
+    <td>
+      <img src="https://img.shields.io/badge/ESP32-000000?style=for-the-badge&logo=espressif&logoColor=white" />
+      <img src="https://img.shields.io/badge/STM32-03234B?style=for-the-badge&logo=stmicroelectronics&logoColor=white" />
+      <img src="https://img.shields.io/badge/Arduino-00979D?style=for-the-badge&logo=arduino&logoColor=white" />
+      <img src="https://img.shields.io/badge/MQTT-660066?style=for-the-badge&logo=mqtt&logoColor=white" />
+      <img src="https://img.shields.io/badge/Modbus-C1272D?style=for-the-badge&logoColor=white" />
+      <img src="https://img.shields.io/badge/RS485-333333?style=for-the-badge&logoColor=white" />
+    </td>
+  </tr>
+  <tr>
+    <td width="22%" valign="top"><b>Web & Systems</b></td>
+    <td>
+      <img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" />
+      <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white" />
+      <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" />
+      <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" />
+    </td>
+  </tr>
+  <tr>
+    <td width="22%" valign="top"><b>AI & Computer Vision</b></td>
+    <td>
+      <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white" />
+      <img src="https://img.shields.io/badge/YOLO-00FFFF?style=for-the-badge&logo=ultralytics&logoColor=black" />
+      <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white" />
+    </td>
+  </tr>
+  <tr>
+    <td width="22%" valign="top"><b>Tools & Environment</b></td>
+    <td>
+      <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" />
+      <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" />
+      <img src="https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white" />
+      <img src="https://img.shields.io/badge/IntelliJ_IDEA-000000?style=for-the-badge&logo=intellijidea&logoColor=white" />
+    </td>
+  </tr>
+</table>
+
+---
+
+## 🚀 Featured Projects
+
+<table>
+  <tr>
+    <td width="100%" valign="top">
+      <h3>🔍 Natural Language CCTV Search</h3>
+      <p>An AI surveillance system that lets you search CCTV footage using plain English instead of scrubbing through hours of video — combines object detection with vision-language models to make surveillance footage indexed and searchable.</p>
+      <p><b>Tech Stack:</b> Python • YOLO • CLIP • DINO • OpenCV</p>
+      <a href="https://github.com/Shreevishnu-senthilkumar"><b>View Repository »</b></a>
+    </td>
+  </tr>
+  <tr>
+    <td width="100%" valign="top">
+      <h3>⚡ Industrial Energy Monitoring System</h3>
+      <p>Real-time energy monitoring for industrial equipment, pulling live data from field devices over RS485/Modbus and streaming it via MQTT — built to catch inefficiencies before they show up on the power bill.</p>
+      <p><b>Tech Stack:</b> ESP32 • MQTT • RS485 • Modbus • Embedded C++</p>
+      <a href="https://github.com/Shreevishnu-senthilkumar"><b>View Repository »</b></a>
+    </td>
+  </tr>
+  <tr>
+    <td width="100%" valign="top">
+      <h3>🏫 Smart Classroom Automation</h3>
+      <p>Sensor-driven automation for lighting, fans, and occupancy in classrooms, aimed at cutting energy waste in spaces that are rarely fully occupied.</p>
+      <p><b>Tech Stack:</b> ESP32 • Sensors • Arduino • C++</p>
+      <a href="https://github.com/Shreevishnu-senthilkumar"><b>View Repository »</b></a>
+    </td>
+  </tr>
+</table>
+
+---
+
+## 📊 GitHub Analytics
+
+<div align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=Shreevishnu-senthilkumar&show_icons=true&theme=tokyonight&hide_border=true" alt="GitHub Stats" />
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Shreevishnu-senthilkumar&layout=compact&theme=tokyonight&hide_border=true" alt="Top Languages" />
+</div>
+
+<br/>
+
+<div align="center">
+  <img src="https://streak-stats.demolab.com?user=Shreevishnu-senthilkumar&theme=tokyonight&hide_border=true" alt="GitHub Streak" />
+</div>
+
+<br/>
+
+<div align="center">
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=Shreevishnu-senthilkumar&theme=tokyo-night" alt="Activity Graph" />
+</div>
+
+---
+
+<div align="center">
+  <p><i>"I build software that bridges hardware, AI, and real-world problems."</i></p>
+  <p>⭐ <b>If any of this is useful to you, a star on my repos goes a long way.</b></p>
+</div>
+<img width="290" height="150" alt="light" src="https://github.com/user-attachments/assets/7f2a84ac-88bb-45e0-a661-0844894b0a46" />
+<img width="290" height="150" alt="dark" src="https://github.com/user-attachments/assets/fae97d69-c082-4cf2-b1ca-0f9f372878d6" />
