@@ -1,14 +1,17 @@
 <div align="center">
-  <h1>Hi 👋, I'm Shreevishnu R S</h1>
-  <h3>Software & Embedded Systems Engineer | Hardware • Data • AI</h3>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="./light.svg">
+    <img alt="Shreevishnu R S - Hero Banner" src="./dark.svg" width="100%">
+  </picture>
+</div>
 
-  <p>
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=18&pause=1000&color=38BDF8&center=true&vCenter=true&width=700&lines=Software+%26+Embedded+Systems+Engineer;Java+%7C+DSA+%7C+System+Design;Embedded+Linux+%2B+IoT+%2B+Edge+AI;Bridging+Hardware%2C+Data%2C+and+Intelligence" alt="Typing SVG" />
-  </p>
+<br/>
 
+<div align="center">
   <p>
     <a href="https://linkedin.com/in/YOUR_LINKEDIN"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
-    <a href="mailto:YOUR_EMAIL@gmail.com"><img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
+    <a href="mailto:shreevishnu.rs@gmail.com"><img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
     <a href="https://github.com/Shreevishnu-senthilkumar"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
   </p>
 </div>
@@ -140,5 +143,3 @@ From engineering firmware on microcontrollers (ESP32/STM32) streaming industrial
   <p><i>"I build software that bridges hardware, AI, and real-world problems."</i></p>
   <p>⭐ <b>If any of this is useful to you, a star on my repos goes a long way.</b></p>
 </div>
-<img width="290" height="150" alt="light" src="https://github.com/user-attachments/assets/7f2a84ac-88bb-45e0-a661-0844894b0a46" />
-<img width="290" height="150" alt="dark" src="https://github.com/user-attachments/assets/fae97d69-c082-4cf2-b1ca-0f9f372878d6" />
