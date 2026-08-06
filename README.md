@@ -1,9 +1,22 @@
 <div align="center">
+  <!-- Auto Theme Switcher (Adapts to GitHub theme) -->
   <img src="./dark.svg#gh-dark-mode-only" alt="Shreevishnu R S - Hero Banner" width="100%">
   <img src="./light.svg#gh-light-mode-only" alt="Shreevishnu R S - Hero Banner" width="100%">
 </div>
 
 <br/>
+
+<div align="center">
+  <details>
+    <summary><b>🎨 Click here to manually toggle / preview Light &amp; Dark Banners</b></summary>
+    <br/>
+    <p><b>🌙 Dark Mode Banner:</b></p>
+    <img src="./dark.svg" alt="Dark Mode Banner" width="100%" />
+    <br/><br/>
+    <p><b>☀️ Light Mode Banner:</b></p>
+    <img src="./light.svg" alt="Light Mode Banner" width="100%" />
+  </details>
+</div>
 
 <div align="center">
   <p>
