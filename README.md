@@ -66,8 +66,6 @@ From engineering firmware on microcontrollers (ESP32/STM32) streaming industrial
     <td>
       <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white" />
       <img src="https://img.shields.io/badge/YOLO-00FFFF?style=for-the-badge&logo=ultralytics&logoColor=black" />
-      <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white" />
-    </td>
   </tr>
   <tr>
     <td width="22%" valign="top"><b>Tools & Environment</b></td>
