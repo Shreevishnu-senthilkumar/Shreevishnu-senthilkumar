@@ -90,7 +90,7 @@ From engineering firmware on microcontrollers (ESP32/STM32) streaming industrial
       <h3>🔍 Natural Language CCTV Search</h3>
       <p>An AI surveillance system that lets you search CCTV footage using plain English instead of scrubbing through hours of video — combines object detection with vision-language models to make surveillance footage indexed and searchable.</p>
       <p><b>Tech Stack:</b> Python • YOLO • CLIP • DINO • OpenCV</p>
-      <a href="https://github.com/Shreevishnu-senthilkumar"><b>View Repository »</b></a>
+      <a href="https://github.com/Shreevishnu-senthilkumar/CCTV-Ai-Vision-Search"><b>View Repository »</b></a>
     </td>
   </tr>
   <tr>
@@ -98,7 +98,7 @@ From engineering firmware on microcontrollers (ESP32/STM32) streaming industrial
       <h3>⚡ Industrial Energy Monitoring System</h3>
       <p>Real-time energy monitoring for industrial equipment, pulling live data from field devices over RS485/Modbus and streaming it via MQTT — built to catch inefficiencies before they show up on the power bill.</p>
       <p><b>Tech Stack:</b> ESP32 • MQTT • RS485 • Modbus • Embedded C++</p>
-      <a href="https://github.com/Shreevishnu-senthilkumar"><b>View Repository »</b></a>
+      <a href="https://github.com/Shreevishnu-senthilkumar/EnergyMeter-Powerhouse"><b>View Repository »</b></a>
     </td>
   </tr>
   <tr>
@@ -106,7 +106,7 @@ From engineering firmware on microcontrollers (ESP32/STM32) streaming industrial
       <h3>🏫 Smart Classroom Automation</h3>
       <p>Sensor-driven automation for lighting, fans, and occupancy in classrooms, aimed at cutting energy waste in spaces that are rarely fully occupied.</p>
       <p><b>Tech Stack:</b> ESP32 • Sensors • Arduino • C++</p>
-      <a href="https://github.com/Shreevishnu-senthilkumar"><b>View Repository »</b></a>
+      <a href="https://github.com/Shreevishnu-senthilkumar/Power-Automation"><b>View Repository »</b></a>
     </td>
   </tr>
 </table>
