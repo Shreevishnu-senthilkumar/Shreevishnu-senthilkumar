@@ -30,7 +30,7 @@ From engineering firmware on microcontrollers (ESP32/STM32) streaming industrial
 ---
 
 ## 🛠️ Tech Stack & Capabilities
-
+ 
 <table>
   <tr>
     <td width="22%" valign="top"><b>Languages & Core</b></td>
