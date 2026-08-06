@@ -66,6 +66,7 @@ From engineering firmware on microcontrollers (ESP32/STM32) streaming industrial
     <td>
       <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white" />
       <img src="https://img.shields.io/badge/YOLO-00FFFF?style=for-the-badge&logo=ultralytics&logoColor=black" />
+    </td>
   </tr>
   <tr>
     <td width="22%" valign="top"><b>Tools & Environment</b></td>
@@ -112,13 +113,6 @@ From engineering firmware on microcontrollers (ESP32/STM32) streaming industrial
 ---
 
 ## 📊 GitHub Analytics
-
-<div align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=Shreevishnu-senthilkumar&show_icons=true&theme=tokyonight&hide_border=true" alt="GitHub Stats" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Shreevishnu-senthilkumar&layout=compact&theme=tokyonight&hide_border=true" alt="Top Languages" />
-</div>
-
-<br/>
 
 <div align="center">
   <img src="https://streak-stats.demolab.com?user=Shreevishnu-senthilkumar&theme=tokyonight&hide_border=true" alt="GitHub Streak" />
