@@ -1,24 +1,11 @@
 <div align="center">
-  <!-- Auto Theme Switcher (Adapts to GitHub theme) -->
-  <img src="./dark.svg#gh-dark-mode-only" alt="Shreevishnu R S - Hero Banner" width="100%">
-  <img src="./light.svg#gh-light-mode-only" alt="Shreevishnu R S - Hero Banner" width="100%">
+
+![Shreevishnu R S - Hero Banner](./dark.svg#gh-dark-mode-only)
+![Shreevishnu R S - Hero Banner](./light.svg#gh-light-mode-only)
+
 </div>
 
 <br/>
-
-<div align="center">
-  <details>
-    <summary>
-      <img src="https://img.shields.io/badge/%F0%9F%8E%A8%20Theme%20Toggle-Click%20To%20Switch%20View-7C3AED?style=for-the-badge&logoColor=white" />
-    </summary>
-    <br/>
-    <p><b>🌙 Dark Mode Hero Banner:</b></p>
-    <img src="./dark.svg" alt="Dark Mode Banner" width="100%" />
-    <br/><br/>
-    <p><b>☀️ Light Mode Hero Banner:</b></p>
-    <img src="./light.svg" alt="Light Mode Banner" width="100%" />
-  </details>
-</div>
 
 <div align="center">
   <p>
