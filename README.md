@@ -1,9 +1,6 @@
 <div align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./dark.svg">
-    <source media="(prefers-color-scheme: light)" srcset="./light.svg">
-    <img alt="Shreevishnu R S - Hero Banner" src="./dark.svg" width="100%">
-  </picture>
+  <img src="./dark.svg#gh-dark-mode-only" alt="Shreevishnu R S - Hero Banner" width="100%">
+  <img src="./light.svg#gh-light-mode-only" alt="Shreevishnu R S - Hero Banner" width="100%">
 </div>
 
 <br/>
