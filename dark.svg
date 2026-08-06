@@ -134,7 +134,7 @@
         <text y="128">│           ____                       │</text>
         <text y="146">│         .╱    ╲.   [HARDWARE + AI]   │</text>
         <text y="164">│        ╱  ●  ●  ╲  STATUS: ONLINE    │</text>
-        <text y="182">│       │    └┘    │ ARCH: JAVA / C  │</text>
+        <text y="182">│       │    └┘    │ ARCH: JAVA / C++  │</text>
         <text y="200">│        ╲  ───  ╱   CORE: ESP32/STM32 │</text>
         <text y="218">│         '────'     NET: MQTT/MODBUS  │</text>
         <text y="236">│        ╱│ ▓▓▓ │╲   VISION: YOLO/CLIP │</text>
@@ -311,7 +311,7 @@
       <g transform="translate(0, 360)">
         <line x1="0" y1="0" x2="585" y2="0" stroke="rgba(0, 240, 255, 0.2)" stroke-width="1" />
         <text x="292.5" y="38" font-family="'Fira Code', 'Inter', monospace" font-size="14.5" font-weight="700" fill="#00F0FF" text-anchor="middle" letter-spacing="0.3">
-          "Building scalable software that connects hardware, data, and intelligence."
+          "Engineering resilient software at the intersection of hardware, data, and AI."
         </text>
       </g>
     </g>
