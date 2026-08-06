@@ -169,7 +169,6 @@
       <circle cx="24" cy="19" r="5" fill="#FF007F" />
       <circle cx="40" cy="19" r="5" fill="#F59E0B" />
       <circle cx="56" cy="19" r="5" fill="#00F0FF" />
-      <text x="332" y="23" font-family="'Fira Code', monospace" font-size="12" fill="#FF007F" text-anchor="middle" font-weight="700" letter-spacing="1">~/shreevishnu-rs — retro-zsh</text>
       <line x1="0" y1="38" x2="665" y2="38" stroke="rgba(0, 240, 255, 0.2)" stroke-width="1" />
     </g>
 
