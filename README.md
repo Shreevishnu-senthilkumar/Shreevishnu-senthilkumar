@@ -1,8 +1,5 @@
 <div align="center">
-
-![Shreevishnu R S - Hero Banner](./dark.svg#gh-dark-mode-only)
-![Shreevishnu R S - Hero Banner](./light.svg#gh-light-mode-only)
-
+  <img src="./dark.svg" alt="Shreevishnu R S - Software &amp; Embedded Systems Engineer" width="100%">
 </div>
 
 <br/>
