@@ -134,7 +134,7 @@
         <text y="128">│           ____                       │</text>
         <text y="146">│         .╱    ╲.   [HARDWARE + AI]   │</text>
         <text y="164">│        ╱  ●  ●  ╲  STATUS: ONLINE    │</text>
-        <text y="182">│       │    └┘    │ ARCH: JAVA / C++  │</text>
+        <text y="182">│       │    └┘    │ ARCH: JAVA / C  │</text>
         <text y="200">│        ╲  ───  ╱   CORE: ESP32/STM32 │</text>
         <text y="218">│         '────'     NET: MQTT/MODBUS  │</text>
         <text y="236">│        ╱│ ▓▓▓ │╲   VISION: YOLO/CLIP │</text>
