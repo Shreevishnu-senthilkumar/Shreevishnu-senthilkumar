@@ -120,9 +120,6 @@ From engineering firmware on microcontrollers (ESP32/STM32) streaming industrial
 
 <br/>
 
-<div align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=Shreevishnu-senthilkumar&theme=tokyo-night" alt="Activity Graph" />
-</div>
 
 ---
 
