@@ -126,6 +126,18 @@ From engineering firmware on microcontrollers (ESP32/STM32) streaming industrial
 
 ---
 
+## 🐍 Contribution Snake
+
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Shreevishnu-senthilkumar/Shreevishnu-senthilkumar/output/github-contribution-grid-snake-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/Shreevishnu-senthilkumar/Shreevishnu-senthilkumar/output/github-contribution-grid-snake.svg">
+    <img alt="github contribution grid snake animation" src="https://raw.githubusercontent.com/Shreevishnu-senthilkumar/Shreevishnu-senthilkumar/output/github-contribution-grid-snake-dark.svg">
+  </picture>
+</div>
+
+---
+
 <div align="center">
   <p><i>"I build software that bridges hardware, AI, and real-world problems."</i></p>
   <p>⭐ <b>If any of this is useful to you, a star on my repos goes a long way.</b></p>
