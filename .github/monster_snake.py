@@ -1,13 +1,11 @@
 import os
 import json
 import urllib.request
-import urllib.error
 from pathlib import Path
-from datetime import datetime
 
 
 # ============================================================
-# CONFIGURATION
+# CONFIG
 # ============================================================
 
 USERNAME = os.environ["GITHUB_USERNAME"]
@@ -16,26 +14,28 @@ TOKEN = os.environ["GITHUB_TOKEN"]
 OUTPUT_DIR = Path("dist")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
+COLUMNS = 53
+ROWS = 7
+
 CELL = 12
 GAP = 3
 STEP = CELL + GAP
 
-COLUMNS = 53
-ROWS = 7
-
 WIDTH = COLUMNS * STEP
-HEIGHT = ROWS * STEP + 25
+HEIGHT = ROWS * STEP + 30
+
+BACKGROUND = "#0b0f14"
 
 GREEN = "#00ff66"
-DARK_GREEN = "#00b84a"
-VERY_DARK = "#07140d"
+GREEN_DARK = "#08783c"
+
 RED = "#ff1744"
 WHITE = "#ffffff"
 BLACK = "#020604"
 
 
 # ============================================================
-# GET GITHUB CONTRIBUTIONS
+# GITHUB GRAPHQL
 # ============================================================
 
 QUERY = """
@@ -64,6 +64,7 @@ payload = json.dumps({
     }
 }).encode("utf-8")
 
+
 request = urllib.request.Request(
     "https://api.github.com/graphql",
     data=payload,
@@ -74,138 +75,117 @@ request = urllib.request.Request(
     }
 )
 
-try:
-    with urllib.request.urlopen(request) as response:
-        data = json.loads(response.read().decode("utf-8"))
-except Exception as e:
-    print("Could not retrieve GitHub contributions:")
-    print(e)
-    raise
+
+with urllib.request.urlopen(request) as response:
+    data = json.loads(response.read().decode("utf-8"))
 
 
 if "errors" in data:
     print(data["errors"])
-    raise RuntimeError("GitHub GraphQL request failed")
+    raise RuntimeError("GitHub API request failed")
 
 
-calendar = data["data"]["user"]["contributionsCollection"]["contributionCalendar"]
+calendar = data["data"]["user"]["contributionsCollection"][
+    "contributionCalendar"
+]
 
 weeks = calendar["weeks"]
 
-print(f"User: {USERNAME}")
-print(f"Total contributions: {calendar['totalContributions']}")
+print("Username:", USERNAME)
+print("Total contributions:", calendar["totalContributions"])
 
 
 # ============================================================
-# CONTRIBUTION LEVEL
+# CONTRIBUTION COLOR
 # ============================================================
 
-def contribution_level(count):
+def get_color(count):
+
     if count == 0:
-        return 0
+        return "#111820"
 
     if count <= 2:
-        return 1
+        return "#064d2b"
 
     if count <= 5:
-        return 2
+        return "#08783c"
 
     if count <= 9:
-        return 3
+        return "#00b84a"
 
-    return 4
+    return "#00ff66"
 
 
 # ============================================================
-# BUILD CONTRIBUTION GRID
+# GRID DATA
 # ============================================================
 
 grid = []
 
-for x, week in enumerate(weeks):
-
-    days = week["contributionDays"]
+for x in range(COLUMNS):
 
     column = []
+
+    if x < len(weeks):
+
+        days = weeks[x]["contributionDays"]
+
+    else:
+
+        days = []
 
     for y in range(ROWS):
 
         if y < len(days):
+
             day = days[y]
 
             column.append({
                 "count": day["contributionCount"],
-                "date": day["date"],
-                "level": contribution_level(
-                    day["contributionCount"]
-                )
+                "date": day["date"]
             })
+
         else:
+
             column.append({
                 "count": 0,
-                "date": "",
-                "level": 0
+                "date": ""
             })
 
     grid.append(column)
 
 
 # ============================================================
-# SVG HELPERS
-# ============================================================
-
-def rect_color(level, dark=False):
-
-    if level == 0:
-        return "#111820"
-
-    if level == 1:
-        return "#064d2b"
-
-    if level == 2:
-        return "#08783c"
-
-    if level == 3:
-        return "#00b84a"
-
-    return "#00ff66"
-
-
-def escape(text):
-    return (
-        text.replace("&", "&amp;")
-            .replace("<", "&lt;")
-            .replace(">", "&gt;")
-            .replace('"', "&quot;")
-    )
-
-
-# ============================================================
-# CREATE CONTRIBUTION GRID
+# GRID SVG
 # ============================================================
 
 def create_grid():
 
-    result = []
+    output = []
 
-    for x, column in enumerate(grid):
+    for x in range(COLUMNS):
 
-        for y, day in enumerate(column):
+        for y in range(ROWS):
+
+            item = grid[x][y]
 
             px = x * STEP
             py = y * STEP + 10
 
-            color = rect_color(day["level"])
+            color = get_color(item["count"])
 
             title = ""
 
-            if day["date"]:
+            if item["date"]:
+
                 title = (
-                    f'<title>{escape(day["date"])}: '
-                    f'{day["count"]} contributions</title>'
+                    f"<title>"
+                    f"{item['date']}: "
+                    f"{item['count']} contributions"
+                    f"</title>"
                 )
 
-            result.append(
+            output.append(
                 f'''
                 <rect
                     x="{px}"
@@ -220,27 +200,16 @@ def create_grid():
                 '''
             )
 
-    return "\n".join(result)
+    return "\n".join(output)
 
 
 # ============================================================
-# CREATE SERPENT PATH
+# SNAKE PATH
 # ============================================================
 
-def create_path():
+def create_snake_path():
 
     points = []
-
-    # Make a serpentine path through the grid.
-    #
-    # The snake moves:
-    #
-    # → → → →
-    # ← ← ← ←
-    # → → → →
-    # ← ← ← ←
-    #
-    # This creates a continuous monster path.
 
     for y in range(ROWS):
 
@@ -248,233 +217,355 @@ def create_path():
 
         if y % 2 == 0:
 
-            for x in range(COLUMNS):
-                px = x * STEP + STEP / 2
-                points.append((px, py))
+            x_range = range(COLUMNS)
 
         else:
 
-            for x in range(COLUMNS - 1, -1, -1):
-                px = x * STEP + STEP / 2
-                points.append((px, py))
+            x_range = range(COLUMNS - 1, -1, -1)
 
-    path = f"M {points[0][0]} {points[0][1]} "
+        for x in x_range:
+
+            px = x * STEP + STEP / 2
+
+            points.append((px, py))
+
+
+    path = f"M {points[0][0]} {points[0][1]}"
 
     for px, py in points[1:]:
-        path += f"L {px} {py} "
+
+        path += f" L {px} {py}"
 
     return path
 
 
-PATH = create_path()
+PATH = create_snake_path()
+
+
+# ============================================================
+# EATING ANIMATION
+# ============================================================
+
+def create_eating_effect():
+
+    output = []
+
+    total_cells = COLUMNS * ROWS
+
+    duration = 24.0
+
+    cell_time = duration / total_cells
+
+    index = 0
+
+    for y in range(ROWS):
+
+        if y % 2 == 0:
+
+            x_range = range(COLUMNS)
+
+        else:
+
+            x_range = range(COLUMNS - 1, -1, -1)
+
+        for x in x_range:
+
+            item = grid[x][y]
+
+            if item["count"] > 0:
+
+                px = x * STEP
+                py = y * STEP + 10
+
+                center_x = px + CELL / 2
+                center_y = py + CELL / 2
+
+                delay = index * cell_time
+
+                output.append(
+                    f'''
+                    <g>
+
+                        <!-- Bite flash -->
+
+                        <circle
+                            cx="{center_x}"
+                            cy="{center_y}"
+                            r="2"
+                            fill="{WHITE}"
+                            opacity="0"
+                        >
+
+                            <animate
+                                attributeName="r"
+                                values="2;8;2"
+                                dur="0.35s"
+                                begin="{delay:.3f}s"
+                                repeatCount="indefinite"
+                            />
+
+                            <animate
+                                attributeName="opacity"
+                                values="0;1;0"
+                                dur="0.35s"
+                                begin="{delay:.3f}s"
+                                repeatCount="indefinite"
+                            />
+
+                        </circle>
+
+
+                        <!-- Cell gets eaten -->
+
+                        <rect
+                            x="{px}"
+                            y="{py}"
+                            width="{CELL}"
+                            height="{CELL}"
+                            rx="3"
+                            fill="{BACKGROUND}"
+                            opacity="0"
+                        >
+
+                            <animate
+                                attributeName="opacity"
+                                values="0;0;1;1;0"
+                                keyTimes="0;0.45;0.55;0.95;1"
+                                dur="{duration:.2f}s"
+                                begin="{delay:.3f}s"
+                                repeatCount="indefinite"
+                            />
+
+                        </rect>
+
+                    </g>
+                    '''
+                )
+
+            index += 1
+
+    return "\n".join(output)
 
 
 # ============================================================
 # MONSTER BODY
 # ============================================================
 
-def create_body_segments():
+def create_body():
 
-    result = []
+    output = []
 
-    segments = 11
+    segments = 9
 
     for i in range(segments):
 
+        delay = -(i * 0.10)
+
         radius = 6.5 - (i * 0.25)
 
-        opacity = 1.0 - (i * 0.045)
-
-        delay = -(i * 0.11)
-
-        result.append(
+        output.append(
             f'''
             <circle
                 cx="0"
                 cy="0"
-                r="{radius}"
+                r="{radius:.2f}"
                 fill="{GREEN}"
-                opacity="{opacity}"
+                opacity="0.95"
             >
+
                 <animateMotion
-                    dur="22s"
+                    dur="24s"
+                    begin="{delay:.2f}s"
                     repeatCount="indefinite"
-                    begin="{delay}s"
                     path="{PATH}"
                 />
+
             </circle>
             '''
         )
 
-    return "\n".join(result)
+    return "\n".join(output)
 
 
 # ============================================================
 # MONSTER HEAD
 # ============================================================
 
-def create_monster_head():
+def create_head():
 
     return f'''
     <g>
 
         <!-- Glow -->
+
         <circle
             cx="0"
             cy="0"
-            r="16"
+            r="15"
             fill="{GREEN}"
-            opacity="0.12"
+            opacity="0.15"
         >
+
             <animateMotion
-                dur="22s"
+                dur="24s"
                 repeatCount="indefinite"
                 path="{PATH}"
             />
+
         </circle>
 
 
-        <!-- Monster Head -->
-        <g>
+        <!-- Head -->
 
-            <circle
-                cx="0"
-                cy="0"
-                r="10"
-                fill="{GREEN}"
-                stroke="{BLACK}"
-                stroke-width="2"
-            />
-
-            <!-- Face -->
-            <ellipse
-                cx="0"
-                cy="1"
-                rx="8"
-                ry="7"
-                fill="{VERY_DARK}"
-            />
+        <circle
+            cx="0"
+            cy="0"
+            r="10"
+            fill="{GREEN}"
+            stroke="{BLACK}"
+            stroke-width="2"
+        />
 
 
-            <!-- Left Eye -->
+        <!-- Face -->
 
-            <ellipse
-                cx="-3.5"
-                cy="-2.5"
-                rx="2"
-                ry="2.5"
-                fill="{WHITE}"
-            />
-
-            <circle
-                cx="-3.5"
-                cy="-2.2"
-                r="1"
-                fill="{RED}"
-            />
+        <ellipse
+            cx="0"
+            cy="1"
+            rx="8"
+            ry="7"
+            fill="#06140d"
+        />
 
 
-            <!-- Right Eye -->
+        <!-- LEFT EYE -->
 
-            <ellipse
-                cx="3.5"
-                cy="-2.5"
-                rx="2"
-                ry="2.5"
-                fill="{WHITE}"
-            />
+        <ellipse
+            cx="-3.5"
+            cy="-2.5"
+            rx="2"
+            ry="2.5"
+            fill="{WHITE}"
+        />
 
-            <circle
-                cx="3.5"
-                cy="-2.2"
-                r="1"
-                fill="{RED}"
-            />
-
-
-            <!-- Mouth -->
-
-            <path
-                d="M -6 2 Q 0 9 6 2 Q 0 5 -6 2"
-                fill="#170008"
-                stroke="{BLACK}"
-                stroke-width="1"
-            />
+        <circle
+            cx="-3.5"
+            cy="-2.2"
+            r="1"
+            fill="{RED}"
+        />
 
 
-            <!-- Teeth -->
+        <!-- RIGHT EYE -->
 
-            <path
-                d="
-                    M -4 3
-                    L -2.5 6
-                    L -1 3
+        <ellipse
+            cx="3.5"
+            cy="-2.5"
+            rx="2"
+            ry="2.5"
+            fill="{WHITE}"
+        />
 
-                    M 1 3
-                    L 2.5 6
-                    L 4 3
-                "
-                fill="{WHITE}"
-                stroke="{WHITE}"
-                stroke-width="1.4"
-                stroke-linejoin="round"
-            />
-
-
-            <!-- Tongue -->
-
-            <path
-                d="
-                    M 0 5
-                    Q -1 9 -3 9
-
-                    M 0 5
-                    Q 1 9 3 9
-                "
-                fill="none"
-                stroke="{RED}"
-                stroke-width="1.3"
-                stroke-linecap="round"
-            />
+        <circle
+            cx="3.5"
+            cy="-2.2"
+            r="1"
+            fill="{RED}"
+        />
 
 
-            <!-- Horns -->
+        <!-- MOUTH -->
 
-            <path
-                d="
-                    M -6 -7 L -9 -12 L -3 -9
-                    M 6 -7 L 9 -12 L 3 -9
-                "
-                fill="{GREEN}"
-                stroke="{BLACK}"
-                stroke-width="1"
-            />
+        <path
+            d="
+                M -6 2
+                Q 0 9 6 2
+                Q 0 5 -6 2
+            "
+            fill="#170008"
+            stroke="{BLACK}"
+            stroke-width="1"
+        />
 
-            <animateMotion
-                dur="22s"
-                repeatCount="indefinite"
-                path="{PATH}"
-            />
 
-        </g>
+        <!-- TEETH -->
+
+        <path
+            d="
+                M -4 3
+                L -2.5 6
+                L -1 3
+
+                M 1 3
+                L 2.5 6
+                L 4 3
+            "
+            fill="{WHITE}"
+            stroke="{WHITE}"
+            stroke-width="1.4"
+        />
+
+
+        <!-- TONGUE -->
+
+        <path
+            d="
+                M 0 5
+                Q -1 9 -3 9
+
+                M 0 5
+                Q 1 9 3 9
+            "
+            fill="none"
+            stroke="{RED}"
+            stroke-width="1.3"
+            stroke-linecap="round"
+        />
+
+
+        <!-- HORNS -->
+
+        <path
+            d="
+                M -6 -7
+                L -9 -12
+                L -3 -9
+
+                M 6 -7
+                L 9 -12
+                L 3 -9
+            "
+            fill="{GREEN}"
+            stroke="{BLACK}"
+            stroke-width="1"
+        />
+
+
+        <!-- MOVEMENT -->
+
+        <animateMotion
+            dur="24s"
+            repeatCount="indefinite"
+            path="{PATH}"
+        />
 
     </g>
     '''
 
 
 # ============================================================
-# CREATE SVG
+# SVG
 # ============================================================
 
-def create_svg(dark=True):
-
-    background = "#0b0f14"
+def create_svg():
 
     grid_svg = create_grid()
 
-    body_svg = create_body_segments()
+    eating_svg = create_eating_effect()
 
-    head_svg = create_monster_head()
+    body_svg = create_body()
+
+    head_svg = create_head()
 
     return f'''<?xml version="1.0" encoding="UTF-8"?>
 
@@ -483,7 +574,7 @@ def create_svg(dark=True):
     width="100%"
     viewBox="0 0 {WIDTH} {HEIGHT}"
     role="img"
-    aria-label="Monster GitHub contribution snake"
+    aria-label="Animated monster GitHub contribution snake"
 >
 
     <defs>
@@ -514,24 +605,31 @@ def create_svg(dark=True):
     </defs>
 
 
-    <!-- Background -->
+    <!-- BACKGROUND -->
 
     <rect
         width="100%"
         height="100%"
         rx="12"
-        fill="{background}"
+        fill="{BACKGROUND}"
     />
 
 
-    <!-- Contribution Grid -->
+    <!-- CONTRIBUTION GRID -->
 
     <g>
         {grid_svg}
     </g>
 
 
-    <!-- Animated Monster -->
+    <!-- EATING EFFECT -->
+
+    <g>
+        {eating_svg}
+    </g>
+
+
+    <!-- MONSTER -->
 
     <g filter="url(#glow)">
 
@@ -542,16 +640,16 @@ def create_svg(dark=True):
     </g>
 
 
-    <!-- Title -->
+    <!-- LABEL -->
 
     <text
         x="10"
-        y="{HEIGHT - 5}"
+        y="{HEIGHT - 7}"
         font-family="Arial, sans-serif"
         font-size="8"
         fill="#6b7280"
     >
-        MONSTER CONTRIBUTION SNAKE • {escape(USERNAME)}
+        🐍 MONSTER MODE • {USERNAME} • EATING CONTRIBUTIONS
     </text>
 
 </svg>
@@ -559,23 +657,32 @@ def create_svg(dark=True):
 
 
 # ============================================================
-# WRITE FILES
+# SAVE
 # ============================================================
 
 light_file = OUTPUT_DIR / "github-contribution-monster.svg"
+
 dark_file = OUTPUT_DIR / "github-contribution-monster-dark.svg"
 
+
+svg = create_svg()
+
+
 light_file.write_text(
-    create_svg(False),
+    svg,
     encoding="utf-8"
 )
 
 dark_file.write_text(
-    create_svg(True),
+    svg,
     encoding="utf-8"
 )
 
-print("Monster snake generated successfully.")
 
-print(light_file)
-print(dark_file)
+print("========================================")
+print(" MONSTER SNAKE GENERATED")
+print("========================================")
+print("User:", USERNAME)
+print("Contributions:", calendar["totalContributions"])
+print("Output:", light_file)
+print("Output:", dark_file)
