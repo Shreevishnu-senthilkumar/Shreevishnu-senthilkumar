@@ -24,8 +24,9 @@ STEP = CELL + GAP
 WIDTH = COLUMNS * STEP
 HEIGHT = ROWS * STEP + 30
 
-# Animation speed
-DURATION = 12
+# 🐍 SLOW SNAKE
+# Increase this number = slower
+SNAKE_DURATION = 35
 
 
 # ============================================================
@@ -33,13 +34,11 @@ DURATION = 12
 # ============================================================
 
 BACKGROUND = "#070b14"
-
 EMPTY = "#111827"
 
 BLUE = "#3949ff"
 PURPLE = "#7c3aed"
 PINK = "#ec168c"
-MAGENTA = "#ff1493"
 RED = "#ff1744"
 
 WHITE = "#ffffff"
@@ -68,7 +67,6 @@ query($login: String!) {
 }
 """
 
-
 payload = json.dumps({
     "query": QUERY,
     "variables": {
@@ -93,8 +91,7 @@ with urllib.request.urlopen(request) as response:
 
 
 if "errors" in data:
-    print(data["errors"])
-    raise RuntimeError("GitHub API request failed")
+    raise RuntimeError(data["errors"])
 
 
 calendar = data["data"]["user"]["contributionsCollection"][
@@ -103,11 +100,12 @@ calendar = data["data"]["user"]["contributionsCollection"][
 
 weeks = calendar["weeks"]
 
-print("==========================================")
-print("       MONSTER CONTRIBUTION SNAKE")
-print("==========================================")
+print("========================================")
+print(" MONSTER CONTRIBUTION SNAKE")
+print("========================================")
 print("Username:", USERNAME)
 print("Contributions:", calendar["totalContributions"])
+print("Snake duration:", SNAKE_DURATION, "seconds")
 
 
 # ============================================================
@@ -145,7 +143,7 @@ for x in range(COLUMNS):
 
 
 # ============================================================
-# CONTRIBUTION COLORS
+# CONTRIBUTION COLOR
 # ============================================================
 
 def contribution_color(count):
@@ -215,15 +213,7 @@ def create_grid():
 
 
 # ============================================================
-# CREATE FORWARD SNAKE PATH
-#
-# Row 1: LEFT  -> RIGHT
-# Row 2: RIGHT -> LEFT
-# Row 3: LEFT  -> RIGHT
-# ...
-#
-# This is important:
-# The head and body use this SAME path.
+# SNAKE PATH
 # ============================================================
 
 def create_path():
@@ -236,17 +226,17 @@ def create_path():
 
         if y % 2 == 0:
 
-            x_values = range(COLUMNS)
+            xs = range(COLUMNS)
 
         else:
 
-            x_values = range(
+            xs = range(
                 COLUMNS - 1,
                 -1,
                 -1
             )
 
-        for x in x_values:
+        for x in xs:
 
             px = x * STEP + CELL / 2
 
@@ -272,35 +262,43 @@ PATH, POINTS = create_path()
 
 
 # ============================================================
-# BODY
+# SNAKE BODY
 #
-# Positive begin values make the body FOLLOW the head.
+# Body follows behind the head.
 # ============================================================
 
 def create_body():
 
     result = []
 
-    segments = 16
+    segments = 18
 
     for i in range(segments):
 
-        delay = i * 0.055
+        # Small delay = body follows head
+        delay = i * 0.07
 
-        radius = 7.5 - (
-            i * 0.12
+        radius = 7.2 - (
+            i * 0.09
         )
 
         if radius < 5.5:
             radius = 5.5
 
-        # Purple -> pink -> red
+
+        # Blue -> Purple -> Pink
         if i < 6:
+
             color = BLUE
-        elif i < 11:
+
+        elif i < 12:
+
             color = PURPLE
+
         else:
+
             color = PINK
+
 
         result.append(
             f'''
@@ -312,7 +310,7 @@ def create_body():
                 opacity="0.95">
 
                 <animateMotion
-                    dur="{DURATION}s"
+                    dur="{SNAKE_DURATION}s"
                     begin="{delay:.3f}s"
                     repeatCount="indefinite"
                     rotate="auto"
@@ -329,8 +327,13 @@ def create_body():
 # ============================================================
 # EATING EFFECT
 #
-# Contribution cells disappear shortly AFTER the monster
-# reaches them.
+# IMPORTANT:
+# NO repeatCount here.
+#
+# Therefore:
+# 💥 burst happens once
+# 🟪 cell disappears once
+# ❌ cell does NOT come back
 # ============================================================
 
 def create_eating_effect():
@@ -339,9 +342,10 @@ def create_eating_effect():
 
     total_points = len(POINTS)
 
-    cell_duration = (
-        DURATION / total_points
+    time_per_cell = (
+        SNAKE_DURATION / total_points
     )
+
 
     for index, (cx, cy) in enumerate(POINTS):
 
@@ -353,54 +357,65 @@ def create_eating_effect():
             (cy - 8 - CELL / 2) / STEP
         )
 
+
         if x < 0 or x >= COLUMNS:
             continue
 
         if y < 0 or y >= ROWS:
             continue
 
+
         item = grid[x][y]
 
+
+        # No contribution = nothing to eat
         if item["count"] <= 0:
             continue
 
+
+        # When snake reaches this cell
         start = (
-            index * cell_duration
+            index * time_per_cell
         )
 
-        # ----------------------------------------------------
-        # EXPLOSION PARTICLES
-        # ----------------------------------------------------
+
+        # ====================================================
+        # QUICK BURST
+        # ====================================================
 
         result.append(
             f'''
             <g>
 
+                <!-- WHITE FLASH -->
+
                 <circle
                     cx="{cx}"
                     cy="{cy}"
-                    r="2"
+                    r="1"
                     fill="{WHITE}"
                     opacity="0">
 
                     <animate
                         attributeName="r"
-                        values="1;9;1"
-                        dur="0.28s"
+                        values="1;8;1"
+                        dur="0.22s"
                         begin="{start:.3f}s"
-                        repeatCount="indefinite"
+                        fill="freeze"
                     />
 
                     <animate
                         attributeName="opacity"
                         values="0;1;0"
-                        dur="0.28s"
+                        dur="0.22s"
                         begin="{start:.3f}s"
-                        repeatCount="indefinite"
+                        fill="freeze"
                     />
 
                 </circle>
 
+
+                <!-- RED BURST -->
 
                 <circle
                     cx="{cx}"
@@ -412,17 +427,89 @@ def create_eating_effect():
                     <animate
                         attributeName="r"
                         values="1;7;1"
-                        dur="0.35s"
+                        dur="0.30s"
                         begin="{start + 0.03:.3f}s"
-                        repeatCount="indefinite"
+                        fill="freeze"
                     />
 
                     <animate
                         attributeName="opacity"
-                        values="0;0.9;0"
-                        dur="0.35s"
+                        values="0;1;0"
+                        dur="0.30s"
                         begin="{start + 0.03:.3f}s"
-                        repeatCount="indefinite"
+                        fill="freeze"
+                    />
+
+                </circle>
+
+
+                <!-- PARTICLE 1 -->
+
+                <circle
+                    cx="{cx}"
+                    cy="{cy}"
+                    r="1.5"
+                    fill="{PINK}"
+                    opacity="0">
+
+                    <animate
+                        attributeName="cx"
+                        values="{cx};{cx + 7}"
+                        dur="0.25s"
+                        begin="{start:.3f}s"
+                        fill="freeze"
+                    />
+
+                    <animate
+                        attributeName="cy"
+                        values="{cy};{cy - 6}"
+                        dur="0.25s"
+                        begin="{start:.3f}s"
+                        fill="freeze"
+                    />
+
+                    <animate
+                        attributeName="opacity"
+                        values="1;0"
+                        dur="0.25s"
+                        begin="{start:.3f}s"
+                        fill="freeze"
+                    />
+
+                </circle>
+
+
+                <!-- PARTICLE 2 -->
+
+                <circle
+                    cx="{cx}"
+                    cy="{cy}"
+                    r="1.5"
+                    fill="{PURPLE}"
+                    opacity="0">
+
+                    <animate
+                        attributeName="cx"
+                        values="{cx};{cx - 7}"
+                        dur="0.28s"
+                        begin="{start:.03f}s"
+                        fill="freeze"
+                    />
+
+                    <animate
+                        attributeName="cy"
+                        values="{cy};{cy + 6}"
+                        dur="0.28s"
+                        begin="{start:.03f}s"
+                        fill="freeze"
+                    />
+
+                    <animate
+                        attributeName="opacity"
+                        values="1;0"
+                        dur="0.28s"
+                        begin="{start:.03f}s"
+                        fill="freeze"
                     />
 
                 </circle>
@@ -441,11 +528,10 @@ def create_eating_effect():
 
                     <animate
                         attributeName="opacity"
-                        values="0;0;1;1;0"
-                        keyTimes="0;0.45;0.55;0.85;1"
-                        dur="{DURATION}s"
-                        begin="{start:.3f}s"
-                        repeatCount="indefinite"
+                        values="0;1"
+                        dur="0.18s"
+                        begin="{start + 0.20:.3f}s"
+                        fill="freeze"
                     />
 
                 </rect>
@@ -453,6 +539,7 @@ def create_eating_effect():
             </g>
             '''
         )
+
 
     return "\n".join(result)
 
@@ -466,17 +553,18 @@ def create_head():
     return f'''
     <g>
 
-        <!-- BIG RED GLOW -->
+
+        <!-- OUTER GLOW -->
 
         <circle
             cx="0"
             cy="0"
             r="20"
             fill="{RED}"
-            opacity="0.10">
+            opacity="0.12">
 
             <animateMotion
-                dur="{DURATION}s"
+                dur="{SNAKE_DURATION}s"
                 repeatCount="indefinite"
                 rotate="auto"
                 path="{PATH}"
@@ -484,16 +572,18 @@ def create_head():
 
         </circle>
 
+
+        <!-- INNER GLOW -->
 
         <circle
             cx="0"
             cy="0"
             r="15"
             fill="{PINK}"
-            opacity="0.16">
+            opacity="0.18">
 
             <animateMotion
-                dur="{DURATION}s"
+                dur="{SNAKE_DURATION}s"
                 repeatCount="indefinite"
                 rotate="auto"
                 path="{PATH}"
@@ -502,7 +592,7 @@ def create_head():
         </circle>
 
 
-        <!-- HEAD -->
+        <!-- MONSTER HEAD -->
 
         <circle
             cx="0"
@@ -561,7 +651,7 @@ def create_head():
         />
 
 
-        <!-- EYEBROWS -->
+        <!-- LEFT EYEBROW -->
 
         <path
             d="M -7 -6 L -2 -5"
@@ -569,6 +659,9 @@ def create_head():
             stroke-width="2"
             stroke-linecap="round"
         />
+
+
+        <!-- RIGHT EYEBROW -->
 
         <path
             d="M 7 -6 L 2 -5"
@@ -586,7 +679,7 @@ def create_head():
                 Q 0 11 7 2
                 Q 0 6 -7 2
             "
-            fill="#130006"
+            fill="#150006"
             stroke="{BLACK}"
             stroke-width="1"
         />
@@ -650,10 +743,10 @@ def create_head():
         />
 
 
-        <!-- HEAD MOVES FORWARD -->
+        <!-- HEAD MOVEMENT -->
 
         <animateMotion
-            dur="{DURATION}s"
+            dur="{SNAKE_DURATION}s"
             repeatCount="indefinite"
             rotate="auto"
             path="{PATH}"
@@ -664,71 +757,10 @@ def create_head():
 
 
 # ============================================================
-# SPEED LINES
-# ============================================================
-
-def create_speed_lines():
-
-    return f'''
-    <g
-        opacity="0.55"
-        stroke="{PINK}"
-        stroke-linecap="round"
-    >
-
-        <line
-            x1="0"
-            y1="-4"
-            x2="-15"
-            y2="-4"
-            stroke-width="2"
-        >
-
-            <animateMotion
-                dur="{DURATION}s"
-                repeatCount="indefinite"
-                path="{PATH}"
-            />
-
-        </line>
-
-
-        <line
-            x1="0"
-            y1="5"
-            x2="-11"
-            y2="5"
-            stroke-width="1.5"
-        >
-
-            <animateMotion
-                dur="{DURATION}s"
-                repeatCount="indefinite"
-                path="{PATH}"
-            />
-
-        </line>
-
-    </g>
-    '''
-
-
-# ============================================================
-# COMPLETE SVG
+# SVG
 # ============================================================
 
 def create_svg():
-
-    grid_svg = create_grid()
-
-    eating_svg = create_eating_effect()
-
-    body_svg = create_body()
-
-    head_svg = create_head()
-
-    speed_svg = create_speed_lines()
-
 
     return f'''<?xml version="1.0" encoding="UTF-8"?>
 
@@ -771,8 +803,6 @@ def create_svg():
     <!-- BACKGROUND -->
 
     <rect
-        x="0"
-        y="0"
         width="100%"
         height="100%"
         rx="12"
@@ -783,14 +813,14 @@ def create_svg():
     <!-- CONTRIBUTION GRID -->
 
     <g>
-        {grid_svg}
+        {create_grid()}
     </g>
 
 
     <!-- EATING EFFECT -->
 
     <g>
-        {eating_svg}
+        {create_eating_effect()}
     </g>
 
 
@@ -798,11 +828,9 @@ def create_svg():
 
     <g filter="url(#glow)">
 
-        {body_svg}
+        {create_body()}
 
-        {speed_svg}
-
-        {head_svg}
+        {create_head()}
 
     </g>
 
@@ -816,7 +844,7 @@ def create_svg():
         font-size="8"
         fill="#64748b"
     >
-        🐍 MONSTER MODE • {USERNAME} • DEVOURING CONTRIBUTIONS
+        MONSTER MODE • {USERNAME} • DEVOURING CONTRIBUTIONS
     </text>
 
 </svg>
@@ -824,7 +852,7 @@ def create_svg():
 
 
 # ============================================================
-# WRITE FILES
+# WRITE OUTPUT
 # ============================================================
 
 svg = create_svg()
@@ -853,10 +881,11 @@ dark_file.write_text(
 
 
 print()
-print("==========================================")
-print(" MONSTER SNAKE GENERATED")
-print("==========================================")
-print("Animation:", DURATION, "seconds")
-print("Output:", light_file)
-print("Output:", dark_file)
-print("==========================================")
+print("========================================")
+print(" MONSTER SNAKE GENERATED SUCCESSFULLY")
+print("========================================")
+print("Snake speed:", SNAKE_DURATION, "seconds")
+print("Burst: QUICK")
+print("Eating: ONE TIME ONLY")
+print("Eaten cells: STAY GONE")
+print("========================================")
