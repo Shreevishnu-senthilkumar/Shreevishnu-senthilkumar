@@ -1,14 +1,31 @@
 <div align="center">
-  <img src="./dark.svg" alt="Shreevishnu R S - Software &amp; Embedded Systems Engineer" width="100%">
-</div>
 
-<br/>
+  <a href="https://www.linkedin.com/in/shreevishnu-r-s-400728305/">
+    <img
+      src="https://img.shields.io/badge/LINKEDIN-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"
+      alt="LinkedIn"
+    />
+  </a>
 
-<div align="center"> 
-  <p>
-    <a href="https://www.linkedin.com/in/shreevishnu-r-s-400728305/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
-    <a href="mailto:vishnusenthil2007@gmail.com"><img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
-  </p>
+  <a href="mailto:vishnusenthil2007@gmail.com">
+    <img
+      src="https://img.shields.io/badge/GMAIL-D14836?style=for-the-badge&logo=gmail&logoColor=white"
+      alt="Email"
+    />
+  </a>
+
+  <a href="https://github.com/Shreevishnu-senthilkumar?tab=followers">
+    <img
+      src="https://img.shields.io/github/followers/Shreevishnu-senthilkumar?label=FOLLOWERS&style=for-the-badge&logo=github&logoColor=white&color=00D9FF"
+      alt="GitHub Followers"
+    />
+  </a>
+
+  <img
+    src="https://komarev.com/ghpvc/?username=Shreevishnu-senthilkumar&label=PROFILE%20VIEWS&style=for-the-badge&color=00D9FF&labelColor=252525"
+    alt="Profile Views"
+  />
+
 </div>
 
 <br/>
