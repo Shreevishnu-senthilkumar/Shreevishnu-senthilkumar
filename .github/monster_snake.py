@@ -36,7 +36,7 @@ HEIGHT = ROWS * STEP + 32
 
 # Complete journey across the contribution grid
 # 30 seconds = normal/slightly slow
-SNAKE_DURATION = 40
+SNAKE_DURATION = 30
 
 # Very short eating effect
 BURST_DURATION = 0.18
@@ -46,7 +46,7 @@ BODY_SEGMENTS = 22
 
 # Distance between body segments
 # Smaller = tighter snake
-BODY_SPACING = 0.0025
+BODY_SPACING = 0.0030
 
 
 # ============================================================
