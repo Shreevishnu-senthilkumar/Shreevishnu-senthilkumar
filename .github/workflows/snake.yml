@@ -1,4 +1,4 @@
-name: 🐍 Monster Contribution Snake
+name: Monster Contribution Snake
 
 on:
   schedule:
@@ -10,26 +10,31 @@ on:
     branches:
       - main
 
-permissions:
-  contents: write
-
 jobs:
   generate:
-    name: Generate Monster Snake
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
-      - name: Checkout repository
+
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Generate monster snake
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_USERNAME: ${{ github.repository_owner }}
-        run: |
-          python3 .github/monster_snake.py
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
 
-      - name: Publish monster snake
+      - name: Generate Monster Snake
+        env:
+          GITHUB_USERNAME: ${{ github.repository_owner }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python .github/monster_snake.py
+
+      - name: Deploy to output branch
         uses: crazy-max/ghaction-github-pages@v4
         with:
           build_dir: dist
