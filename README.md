@@ -126,19 +126,20 @@ From engineering firmware on microcontrollers (ESP32/STM32) streaming industrial
 ## 🐍 Monster Contribution Snake
 
 <div align="center">
-  <picture>
-    <source
-      media="(prefers-color-scheme: dark)"
-      srcset="https://raw.githubusercontent.com/Shreevishnu-senthilkumar/Shreevishnu-senthilkumar/output/github-contribution-monster-dark.svg"
-    />
-    <source
-      media="(prefers-color-scheme: light)"
-      srcset="https://raw.githubusercontent.com/Shreevishnu-senthilkumar/Shreevishnu-senthilkumar/output/github-contribution-monster.svg"
-    />
-    <img
-      src="https://raw.githubusercontent.com/Shreevishnu-senthilkumar/Shreevishnu-senthilkumar/output/github-contribution-monster-dark.svg"
-      alt="Monster Contribution Snake"
-      width="100%"
-    />
-  </picture>
+
+<picture>
+  <source
+    media="(prefers-color-scheme: dark)"
+    srcset="https://raw.githubusercontent.com/Shreevishnu-senthilkumar/Shreevishnu-senthilkumar/output/github-contribution-monster-dark.svg">
+
+  <source
+    media="(prefers-color-scheme: light)"
+    srcset="https://raw.githubusercontent.com/Shreevishnu-senthilkumar/Shreevishnu-senthilkumar/output/github-contribution-monster.svg">
+
+  <img
+    alt="Monster contribution snake"
+    src="https://raw.githubusercontent.com/Shreevishnu-senthilkumar/Shreevishnu-senthilkumar/output/github-contribution-monster-dark.svg"
+  />
+</picture>
+
 </div>
