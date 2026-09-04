@@ -123,7 +123,7 @@ From engineering firmware on microcontrollers (ESP32/STM32) streaming industrial
 
 ---
 
-## 🐍 Contribution Snake
+## 🐍 Monster Contribution Snake
 
 <div align="center">
   <picture>
@@ -137,16 +137,8 @@ From engineering firmware on microcontrollers (ESP32/STM32) streaming industrial
     />
     <img
       src="https://raw.githubusercontent.com/Shreevishnu-senthilkumar/Shreevishnu-senthilkumar/output/github-contribution-grid-snake-dark.svg"
-      alt="GitHub contribution grid snake animation"
+      alt="Monster Contribution Snake"
       width="100%"
     />
   </picture>
 </div>
-
----
-
-<div align="center">
-  <p><i>"I build software that bridges hardware, AI, and real-world problems."</i></p>
-  <p>⭐ <b>If any of this is useful to you, a star on my repos goes a long way.</b></p>
-</div>
-
