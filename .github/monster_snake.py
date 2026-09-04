@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 # ============================================================
-# CONFIGURATION
+# CONFIG
 # ============================================================
 
 USERNAME = os.environ["GITHUB_USERNAME"]
@@ -28,11 +28,8 @@ HEIGHT = ROWS * STEP + 30
 # SNAKE SPEED
 # ============================================================
 
-# 120 seconds = slow
-# 90 seconds  = medium
-# 60 seconds  = faster
-
-SNAKE_DURATION = 90
+# Bigger = slower
+SNAKE_DURATION = 80
 
 
 # ============================================================
@@ -117,13 +114,16 @@ print("========================================")
 print("       MONSTER CONTRIBUTION SNAKE")
 print("========================================")
 print("Username:", USERNAME)
-print("Contributions:", calendar["totalContributions"])
-print("Snake duration:", SNAKE_DURATION)
+print(
+    "Total Contributions:",
+    calendar["totalContributions"]
+)
+print("Snake Duration:", SNAKE_DURATION)
 print("========================================")
 
 
 # ============================================================
-# BUILD CONTRIBUTION GRID
+# BUILD GRID
 # ============================================================
 
 grid = []
@@ -170,77 +170,19 @@ def contribution_color(count):
         return EMPTY
 
     if count <= 2:
-        return "#25206b"
-
-    if count <= 5:
         return BLUE
 
-    if count <= 9:
+    if count <= 5:
         return PURPLE
 
-    return PINK
+    if count <= 9:
+        return PINK
 
-
-# ============================================================
-# CREATE CONTRIBUTION GRID
-# ============================================================
-
-def create_grid():
-
-    output = []
-
-
-    for x in range(COLUMNS):
-
-        for y in range(ROWS):
-
-            item = grid[x][y]
-
-            px = x * STEP
-            py = y * STEP + 8
-
-            color = contribution_color(
-                item["count"]
-            )
-
-
-            title = ""
-
-            if item["date"]:
-
-                title = (
-                    f"<title>"
-                    f"{item['date']}: "
-                    f"{item['count']} contributions"
-                    f"</title>"
-                )
-
-
-            output.append(
-                f'''
-                <rect
-                    x="{px}"
-                    y="{py}"
-                    width="{CELL}"
-                    height="{CELL}"
-                    rx="3"
-                    fill="{color}">
-                    {title}
-                </rect>
-                '''
-            )
-
-
-    return "\n".join(output)
+    return RED
 
 
 # ============================================================
 # SNAKE PATH
-#
-# Row 1: LEFT  -> RIGHT
-# Row 2: RIGHT -> LEFT
-# Row 3: LEFT  -> RIGHT
-# etc.
 # ============================================================
 
 def create_path():
@@ -257,6 +199,7 @@ def create_path():
         )
 
 
+        # Zig-zag path
         if y % 2 == 0:
 
             xs = range(COLUMNS)
@@ -302,10 +245,144 @@ PATH, POINTS = create_path()
 
 
 # ============================================================
-# BODY
+# CONTRIBUTION GRID
 #
-# Every body segment follows the SAME path.
-# The delay makes the body follow the head.
+# IMPORTANT:
+# The actual contribution rectangle is animated.
+# We do NOT place another rectangle over it.
+# ============================================================
+
+def create_grid():
+
+    output = []
+
+
+    total_points = len(POINTS)
+
+    time_per_point = (
+        SNAKE_DURATION /
+        total_points
+    )
+
+
+    for x in range(COLUMNS):
+
+        for y in range(ROWS):
+
+            item = grid[x][y]
+
+            px = x * STEP
+            py = y * STEP + 8
+
+            color = contribution_color(
+                item["count"]
+            )
+
+
+            title = ""
+
+            if item["date"]:
+
+                title = (
+                    f"<title>"
+                    f"{item['date']}: "
+                    f"{item['count']} contributions"
+                    f"</title>"
+                )
+
+
+            # ------------------------------------------------
+            # EMPTY CELL
+            # ------------------------------------------------
+
+            if item["count"] == 0:
+
+                output.append(
+                    f'''
+                    <rect
+                        x="{px}"
+                        y="{py}"
+                        width="{CELL}"
+                        height="{CELL}"
+                        rx="3"
+                        fill="{EMPTY}"
+                    />
+                    '''
+                )
+
+                continue
+
+
+            # ------------------------------------------------
+            # FIND WHERE SNAKE REACHES THIS CELL
+            # ------------------------------------------------
+
+            point_index = (
+                y * COLUMNS + x
+            )
+
+
+            if y % 2 == 1:
+
+                point_index = (
+                    y * COLUMNS
+                    + (COLUMNS - 1 - x)
+                )
+
+
+            eat_time = (
+                point_index *
+                time_per_point
+            )
+
+
+            # ------------------------------------------------
+            # CONTRIBUTION CELL
+            #
+            # Visible at beginning.
+            #
+            # Disappears when snake reaches it.
+            #
+            # Then comes back at next cycle.
+            # ------------------------------------------------
+
+            output.append(
+                f'''
+                <rect
+                    x="{px}"
+                    y="{py}"
+                    width="{CELL}"
+                    height="{CELL}"
+                    rx="3"
+                    fill="{color}"
+                >
+
+                    {title}
+
+                    <animate
+                        attributeName="opacity"
+                        values="1;1;0;0;1"
+                        keyTimes="
+                            0;
+                            {eat_time / SNAKE_DURATION:.5f};
+                            {(eat_time + 0.25) / SNAKE_DURATION:.5f};
+                            0.9999;
+                            1
+                        "
+                        dur="{SNAKE_DURATION}s"
+                        repeatCount="indefinite"
+                    />
+
+                </rect>
+                '''
+            )
+
+
+    return "\n".join(output)
+
+
+# ============================================================
+# BODY
 # ============================================================
 
 def create_body():
@@ -317,6 +394,7 @@ def create_body():
 
     for i in range(segments):
 
+        # Body follows behind head
         delay = i * 0.35
 
 
@@ -355,7 +433,6 @@ def create_body():
                     dur="{SNAKE_DURATION}s"
                     begin="{delay:.2f}s"
                     repeatCount="indefinite"
-                    repeatDur="indefinite"
                     calcMode="linear"
                     rotate="auto"
                     path="{PATH}"
@@ -370,25 +447,22 @@ def create_body():
 
 
 # ============================================================
-# EATING EFFECT
+# EATING BURSTS
 #
-# IMPORTANT:
+# QUICK ONLY
 #
-# The effect happens ONCE.
-#
-# It does NOT repeat independently.
-#
-# The whole group is restarted every snake cycle.
+# These are independent visual effects.
+# They repeat with the snake cycle.
 # ============================================================
 
-def create_eating_effect():
+def create_bursts():
 
     output = []
 
 
     total_points = len(POINTS)
 
-    time_per_cell = (
+    time_per_point = (
         SNAKE_DURATION /
         total_points
     )
@@ -400,7 +474,6 @@ def create_eating_effect():
             (cx - CELL / 2) /
             STEP
         )
-
 
         y = int(
             (cy - 8 - CELL / 2) /
@@ -415,177 +488,82 @@ def create_eating_effect():
             continue
 
 
-        item = grid[x][y]
-
-
-        if item["count"] <= 0:
+        if grid[x][y]["count"] <= 0:
             continue
 
 
-        start = (
+        eat_time = (
             index *
-            time_per_cell
+            time_per_point
         )
 
 
         # ====================================================
-        # QUICK BURST
+        # QUICK FLASH
         # ====================================================
 
         output.append(
             f'''
-            <g>
+            <circle
+                cx="{cx}"
+                cy="{cy}"
+                r="1"
+                fill="{WHITE}"
+                opacity="0">
 
-                <!-- WHITE FLASH -->
+                <animate
+                    attributeName="r"
+                    values="1;9;1"
+                    dur="0.22s"
+                    begin="{eat_time:.3f}s"
+                    repeatCount="indefinite"
+                />
 
-                <circle
-                    cx="{cx}"
-                    cy="{cy}"
-                    r="1"
-                    fill="{WHITE}"
-                    opacity="0">
+                <animate
+                    attributeName="opacity"
+                    values="0;1;0"
+                    dur="0.22s"
+                    begin="{eat_time:.3f}s"
+                    repeatCount="indefinite"
+                />
 
-                    <animate
-                        attributeName="r"
-                        values="1;9;1"
-                        dur="0.20s"
-                        begin="{start:.3f}s"
-                        fill="freeze"
-                    />
-
-                    <animate
-                        attributeName="opacity"
-                        values="0;1;0"
-                        dur="0.20s"
-                        begin="{start:.3f}s"
-                        fill="freeze"
-                    />
-
-                </circle>
+            </circle>
+            '''
 
 
-                <!-- RED BURST -->
-
-                <circle
-                    cx="{cx}"
-                    cy="{cy}"
-                    r="1"
-                    fill="{RED}"
-                    opacity="0">
-
-                    <animate
-                        attributeName="r"
-                        values="1;8;1"
-                        dur="0.28s"
-                        begin="{start + 0.02:.3f}s"
-                        fill="freeze"
-                    />
-
-                    <animate
-                        attributeName="opacity"
-                        values="0;1;0"
-                        dur="0.28s"
-                        begin="{start + 0.02:.3f}s"
-                        fill="freeze"
-                    />
-
-                </circle>
+        )
 
 
-                <!-- PARTICLE LEFT -->
+        # ====================================================
+        # PINK BURST
+        # ====================================================
 
-                <circle
-                    cx="{cx}"
-                    cy="{cy}"
-                    r="1.5"
-                    fill="{PINK}"
-                    opacity="0">
+        output.append(
+            f'''
+            <circle
+                cx="{cx}"
+                cy="{cy}"
+                r="1"
+                fill="{PINK}"
+                opacity="0">
 
-                    <animate
-                        attributeName="cx"
-                        values="{cx};{cx - 8}"
-                        dur="0.25s"
-                        begin="{start:.3f}s"
-                        fill="freeze"
-                    />
+                <animate
+                    attributeName="r"
+                    values="1;7;1"
+                    dur="0.30s"
+                    begin="{eat_time + 0.03:.3f}s"
+                    repeatCount="indefinite"
+                />
 
-                    <animate
-                        attributeName="cy"
-                        values="{cy};{cy - 5}"
-                        dur="0.25s"
-                        begin="{start:.3f}s"
-                        fill="freeze"
-                    />
+                <animate
+                    attributeName="opacity"
+                    values="0;0.9;0"
+                    dur="0.30s"
+                    begin="{eat_time + 0.03:.3f}s"
+                    repeatCount="indefinite"
+                />
 
-                    <animate
-                        attributeName="opacity"
-                        values="1;0"
-                        dur="0.25s"
-                        begin="{start:.3f}s"
-                        fill="freeze"
-                    />
-
-                </circle>
-
-
-                <!-- PARTICLE RIGHT -->
-
-                <circle
-                    cx="{cx}"
-                    cy="{cy}"
-                    r="1.5"
-                    fill="{PURPLE}"
-                    opacity="0">
-
-                    <animate
-                        attributeName="cx"
-                        values="{cx};{cx + 8}"
-                        dur="0.25s"
-                        begin="{start:.3f}s"
-                        fill="freeze"
-                    />
-
-                    <animate
-                        attributeName="cy"
-                        values="{cy};{cy + 5}"
-                        dur="0.25s"
-                        begin="{start:.3f}s"
-                        fill="freeze"
-                    />
-
-                    <animate
-                        attributeName="opacity"
-                        values="1;0"
-                        dur="0.25s"
-                        begin="{start:.3f}s"
-                        fill="freeze"
-                    />
-
-                </circle>
-
-
-                <!-- CELL DISAPPEARS -->
-
-                <rect
-                    x="{cx - CELL / 2 - 2}"
-                    y="{cy - CELL / 2 - 2}"
-                    width="{CELL + 4}"
-                    height="{CELL + 4}"
-                    rx="4"
-                    fill="{BACKGROUND}"
-                    opacity="0">
-
-                    <animate
-                        attributeName="opacity"
-                        values="0;1"
-                        dur="0.18s"
-                        begin="{start + 0.20:.3f}s"
-                        fill="freeze"
-                    />
-
-                </rect>
-
-            </g>
+            </circle>
             '''
         )
 
@@ -603,7 +581,7 @@ def create_head():
     <g>
 
 
-        <!-- BIG GLOW -->
+        <!-- OUTER GLOW -->
 
         <circle
             cx="0"
@@ -614,31 +592,7 @@ def create_head():
 
             <animateMotion
                 dur="{SNAKE_DURATION}s"
-                begin="0s"
                 repeatCount="indefinite"
-                repeatDur="indefinite"
-                calcMode="linear"
-                rotate="auto"
-                path="{PATH}"
-            />
-
-        </circle>
-
-
-        <!-- INNER GLOW -->
-
-        <circle
-            cx="0"
-            cy="0"
-            r="15"
-            fill="{PINK}"
-            opacity="0.18">
-
-            <animateMotion
-                dur="{SNAKE_DURATION}s"
-                begin="0s"
-                repeatCount="indefinite"
-                repeatDur="indefinite"
                 calcMode="linear"
                 rotate="auto"
                 path="{PATH}"
@@ -780,9 +734,7 @@ def create_head():
 
         <animateMotion
             dur="{SNAKE_DURATION}s"
-            begin="0s"
             repeatCount="indefinite"
-            repeatDur="indefinite"
             calcMode="linear"
             rotate="auto"
             path="{PATH}"
@@ -793,19 +745,10 @@ def create_head():
 
 
 # ============================================================
-# SVG
+# COMPLETE SVG
 # ============================================================
 
 def create_svg():
-
-    grid_svg = create_grid()
-
-    eating_svg = create_eating_effect()
-
-    body_svg = create_body()
-
-    head_svg = create_head()
-
 
     return f'''<?xml version="1.0" encoding="UTF-8"?>
 
@@ -860,18 +803,21 @@ def create_svg():
 
     <!-- CONTRIBUTION GRID -->
 
-    <g id="contribution-grid">
+    <g id="contributions">
 
-        {grid_svg}
+        {create_grid()}
 
     </g>
 
 
-    <!-- EATING EFFECT -->
+    <!-- BURST EFFECT -->
 
-    <g id="eating-effects">
+    <g
+        id="eating-bursts"
+        filter="url(#glow)"
+    >
 
-        {eating_svg}
+        {create_bursts()}
 
     </g>
 
@@ -883,9 +829,9 @@ def create_svg():
         filter="url(#glow)"
     >
 
-        {body_svg}
+        {create_body()}
 
-        {head_svg}
+        {create_head()}
 
     </g>
 
@@ -938,9 +884,11 @@ dark_file.write_text(
 
 print()
 print("========================================")
-print(" MONSTER SNAKE READY")
+print(" MONSTER SNAKE GENERATED")
 print("========================================")
-print("Speed      :", SNAKE_DURATION, "seconds")
-print("Snake loop : ENABLED")
-print("Burst      : QUICK")
+print("Speed       :", SNAKE_DURATION, "seconds")
+print("Loop        : YES")
+print("Contribute  : VISIBLE BEFORE EATING")
+print("Burst       : 0.22 - 0.30 sec")
+print("Reset       : EVERY NEW CYCLE")
 print("========================================")
