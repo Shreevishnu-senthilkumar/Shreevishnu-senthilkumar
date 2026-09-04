@@ -1,4 +1,3 @@
-
 <div align="center">
   <img src="./dark.svg" alt="Shreevishnu R S - Software &amp; Embedded Systems Engineer" width="100%">
 </div>
@@ -140,3 +139,6 @@ From engineering firmware on microcontrollers (ESP32/STM32) streaming industrial
   <p><i>"I build software that bridges hardware, AI, and real-world problems."</i></p>
   <p>⭐ <b>If any of this is useful to you, a star on my repos goes a long way.</b></p>
 </div>
+
+
+
