@@ -129,14 +129,14 @@ From engineering firmware on microcontrollers (ESP32/STM32) streaming industrial
   <picture>
     <source
       media="(prefers-color-scheme: dark)"
-      srcset="https://raw.githubusercontent.com/Shreevishnu-senthilkumar/Shreevishnu-senthilkumar/output/github-contribution-grid-snake-dark.svg"
+      srcset="https://raw.githubusercontent.com/Shreevishnu-senthilkumar/Shreevishnu-senthilkumar/output/github-contribution-monster-dark.svg"
     />
     <source
       media="(prefers-color-scheme: light)"
-      srcset="https://raw.githubusercontent.com/Shreevishnu-senthilkumar/Shreevishnu-senthilkumar/output/github-contribution-grid-snake.svg"
+      srcset="https://raw.githubusercontent.com/Shreevishnu-senthilkumar/Shreevishnu-senthilkumar/output/github-contribution-monster.svg"
     />
     <img
-      src="https://raw.githubusercontent.com/Shreevishnu-senthilkumar/Shreevishnu-senthilkumar/output/github-contribution-grid-snake-dark.svg"
+      src="https://raw.githubusercontent.com/Shreevishnu-senthilkumar/Shreevishnu-senthilkumar/output/github-contribution-monster-dark.svg"
       alt="Monster Contribution Snake"
       width="100%"
     />
