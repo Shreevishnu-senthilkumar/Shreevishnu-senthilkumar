@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 # ============================================================
-# CONFIG
+# CONFIGURATION
 # ============================================================
 
 USERNAME = os.environ["GITHUB_USERNAME"]
@@ -14,20 +14,20 @@ TOKEN = os.environ["GITHUB_TOKEN"]
 OUTPUT_DIR = Path("dist")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-COLUMNS = 53
 ROWS = 7
+COLUMNS = 53
 
 CELL = 12
 GAP = 3
 STEP = CELL + GAP
 
 WIDTH = COLUMNS * STEP
-HEIGHT = ROWS * STEP + 30
+HEIGHT = ROWS * STEP + 25
 
-BACKGROUND = "#0b0f14"
+BG = "#0b0f14"
 
 GREEN = "#00ff66"
-GREEN_DARK = "#08783c"
+GREEN2 = "#00cc55"
 
 RED = "#ff1744"
 WHITE = "#ffffff"
@@ -35,7 +35,7 @@ BLACK = "#020604"
 
 
 # ============================================================
-# GITHUB GRAPHQL
+# GET GITHUB CONTRIBUTIONS
 # ============================================================
 
 QUERY = """
@@ -48,7 +48,6 @@ query($login: String!) {
           contributionDays {
             contributionCount
             date
-            weekday
           }
         }
       }
@@ -71,7 +70,7 @@ request = urllib.request.Request(
     headers={
         "Authorization": f"Bearer {TOKEN}",
         "Content-Type": "application/json",
-        "User-Agent": "monster-contribution-snake"
+        "User-Agent": "monster-snake"
     }
 )
 
@@ -81,8 +80,7 @@ with urllib.request.urlopen(request) as response:
 
 
 if "errors" in data:
-    print(data["errors"])
-    raise RuntimeError("GitHub API request failed")
+    raise RuntimeError(data["errors"])
 
 
 calendar = data["data"]["user"]["contributionsCollection"][
@@ -91,15 +89,52 @@ calendar = data["data"]["user"]["contributionsCollection"][
 
 weeks = calendar["weeks"]
 
-print("Username:", USERNAME)
-print("Total contributions:", calendar["totalContributions"])
+print("========================================")
+print(" MONSTER SNAKE")
+print("========================================")
+print("User:", USERNAME)
+print("Contributions:", calendar["totalContributions"])
+
+
+# ============================================================
+# GRID
+# ============================================================
+
+grid = []
+
+for x in range(COLUMNS):
+
+    days = []
+
+    if x < len(weeks):
+        days = weeks[x]["contributionDays"]
+
+    column = []
+
+    for y in range(ROWS):
+
+        if y < len(days):
+
+            column.append({
+                "count": days[y]["contributionCount"],
+                "date": days[y]["date"]
+            })
+
+        else:
+
+            column.append({
+                "count": 0,
+                "date": ""
+            })
+
+    grid.append(column)
 
 
 # ============================================================
 # CONTRIBUTION COLOR
 # ============================================================
 
-def get_color(count):
+def contribution_color(count):
 
     if count == 0:
         return "#111820"
@@ -117,51 +152,12 @@ def get_color(count):
 
 
 # ============================================================
-# GRID DATA
-# ============================================================
-
-grid = []
-
-for x in range(COLUMNS):
-
-    column = []
-
-    if x < len(weeks):
-
-        days = weeks[x]["contributionDays"]
-
-    else:
-
-        days = []
-
-    for y in range(ROWS):
-
-        if y < len(days):
-
-            day = days[y]
-
-            column.append({
-                "count": day["contributionCount"],
-                "date": day["date"]
-            })
-
-        else:
-
-            column.append({
-                "count": 0,
-                "date": ""
-            })
-
-    grid.append(column)
-
-
-# ============================================================
-# GRID SVG
+# GRID
 # ============================================================
 
 def create_grid():
 
-    output = []
+    svg = []
 
     for x in range(COLUMNS):
 
@@ -170,22 +166,20 @@ def create_grid():
             item = grid[x][y]
 
             px = x * STEP
-            py = y * STEP + 10
+            py = y * STEP + 8
 
-            color = get_color(item["count"])
+            color = contribution_color(item["count"])
 
             title = ""
 
             if item["date"]:
 
                 title = (
-                    f"<title>"
-                    f"{item['date']}: "
-                    f"{item['count']} contributions"
-                    f"</title>"
+                    f"<title>{item['date']}: "
+                    f"{item['count']} contributions</title>"
                 )
 
-            output.append(
+            svg.append(
                 f'''
                 <rect
                     x="{px}"
@@ -193,37 +187,36 @@ def create_grid():
                     width="{CELL}"
                     height="{CELL}"
                     rx="3"
-                    fill="{color}"
-                >
+                    fill="{color}">
                     {title}
                 </rect>
                 '''
             )
 
-    return "\n".join(output)
+    return "\n".join(svg)
 
 
 # ============================================================
 # SNAKE PATH
 # ============================================================
 
-def create_snake_path():
+def create_path():
 
     points = []
 
     for y in range(ROWS):
 
-        py = y * STEP + STEP / 2 + 10
+        py = y * STEP + STEP / 2 + 8
 
         if y % 2 == 0:
 
-            x_range = range(COLUMNS)
+            xs = range(COLUMNS)
 
         else:
 
-            x_range = range(COLUMNS - 1, -1, -1)
+            xs = range(COLUMNS - 1, -1, -1)
 
-        for x in x_range:
+        for x in xs:
 
             px = x * STEP + STEP / 2
 
@@ -239,144 +232,48 @@ def create_snake_path():
     return path
 
 
-PATH = create_snake_path()
-
-
-# ============================================================
-# EATING ANIMATION
-# ============================================================
-
-def create_eating_effect():
-
-    output = []
-
-    total_cells = COLUMNS * ROWS
-
-    duration = 24.0
-
-    cell_time = duration / total_cells
-
-    index = 0
-
-    for y in range(ROWS):
-
-        if y % 2 == 0:
-
-            x_range = range(COLUMNS)
-
-        else:
-
-            x_range = range(COLUMNS - 1, -1, -1)
-
-        for x in x_range:
-
-            item = grid[x][y]
-
-            if item["count"] > 0:
-
-                px = x * STEP
-                py = y * STEP + 10
-
-                center_x = px + CELL / 2
-                center_y = py + CELL / 2
-
-                delay = index * cell_time
-
-                output.append(
-                    f'''
-                    <g>
-
-                        <!-- Bite flash -->
-
-                        <circle
-                            cx="{center_x}"
-                            cy="{center_y}"
-                            r="2"
-                            fill="{WHITE}"
-                            opacity="0"
-                        >
-
-                            <animate
-                                attributeName="r"
-                                values="2;8;2"
-                                dur="0.35s"
-                                begin="{delay:.3f}s"
-                                repeatCount="indefinite"
-                            />
-
-                            <animate
-                                attributeName="opacity"
-                                values="0;1;0"
-                                dur="0.35s"
-                                begin="{delay:.3f}s"
-                                repeatCount="indefinite"
-                            />
-
-                        </circle>
-
-
-                        <!-- Cell gets eaten -->
-
-                        <rect
-                            x="{px}"
-                            y="{py}"
-                            width="{CELL}"
-                            height="{CELL}"
-                            rx="3"
-                            fill="{BACKGROUND}"
-                            opacity="0"
-                        >
-
-                            <animate
-                                attributeName="opacity"
-                                values="0;0;1;1;0"
-                                keyTimes="0;0.45;0.55;0.95;1"
-                                dur="{duration:.2f}s"
-                                begin="{delay:.3f}s"
-                                repeatCount="indefinite"
-                            />
-
-                        </rect>
-
-                    </g>
-                    '''
-                )
-
-            index += 1
-
-    return "\n".join(output)
+PATH = create_path()
 
 
 # ============================================================
 # MONSTER BODY
+#
+# IMPORTANT:
+# The body segments use the SAME animation path.
+# Each segment starts slightly later so it follows the head.
 # ============================================================
 
 def create_body():
 
-    output = []
+    svg = []
 
-    segments = 9
+    segments = 14
 
     for i in range(segments):
 
-        delay = -(i * 0.10)
+        delay = i * 0.07
 
-        radius = 6.5 - (i * 0.25)
+        radius = 6.8 - (i * 0.12)
 
-        output.append(
+        if radius < 4.8:
+            radius = 4.8
+
+        opacity = 1.0 - (i * 0.035)
+
+        svg.append(
             f'''
             <circle
                 cx="0"
                 cy="0"
                 r="{radius:.2f}"
                 fill="{GREEN}"
-                opacity="0.95"
-            >
+                opacity="{opacity:.2f}">
 
                 <animateMotion
-                    dur="24s"
-                    begin="{delay:.2f}s"
+                    dur="30s"
+                    begin="-{delay:.2f}s"
                     repeatCount="indefinite"
+                    rotate="auto"
                     path="{PATH}"
                 />
 
@@ -384,7 +281,107 @@ def create_body():
             '''
         )
 
-    return "\n".join(output)
+    return "\n".join(svg)
+
+
+# ============================================================
+# EATING SYSTEM
+#
+# Every contribution cell is hidden at the EXACT time
+# the monster reaches that cell.
+# ============================================================
+
+def create_eating():
+
+    svg = []
+
+    total_points = ROWS * COLUMNS
+
+    duration = 30.0
+
+    cell_time = duration / total_points
+
+    index = 0
+
+    for y in range(ROWS):
+
+        if y % 2 == 0:
+            xs = range(COLUMNS)
+        else:
+            xs = range(COLUMNS - 1, -1, -1)
+
+        for x in xs:
+
+            item = grid[x][y]
+
+            if item["count"] > 0:
+
+                px = x * STEP
+                py = y * STEP + 8
+
+                cx = px + CELL / 2
+                cy = py + CELL / 2
+
+                start = index * cell_time
+
+                # Contribution disappears
+                svg.append(
+                    f'''
+                    <rect
+                        x="{px - 1}"
+                        y="{py - 1}"
+                        width="{CELL + 2}"
+                        height="{CELL + 2}"
+                        rx="3"
+                        fill="{BG}"
+                        opacity="0">
+
+                        <animate
+                            attributeName="opacity"
+                            values="0;0;1;1;0"
+                            keyTimes="0;0.42;0.50;0.88;1"
+                            dur="{duration}s"
+                            begin="{start:.3f}s"
+                            repeatCount="indefinite"
+                        />
+
+                    </rect>
+                    '''
+                )
+
+                # Bite explosion
+                svg.append(
+                    f'''
+                    <circle
+                        cx="{cx}"
+                        cy="{cy}"
+                        r="1"
+                        fill="{GREEN}"
+                        opacity="0">
+
+                        <animate
+                            attributeName="r"
+                            values="1;9;1"
+                            dur="0.4s"
+                            begin="{start:.3f}s"
+                            repeatCount="indefinite"
+                        />
+
+                        <animate
+                            attributeName="opacity"
+                            values="0;1;0"
+                            dur="0.4s"
+                            begin="{start:.3f}s"
+                            repeatCount="indefinite"
+                        />
+
+                    </circle>
+                    '''
+                )
+
+            index += 1
+
+    return "\n".join(svg)
 
 
 # ============================================================
@@ -396,44 +393,44 @@ def create_head():
     return f'''
     <g>
 
-        <!-- Glow -->
+        <!-- HEAD GLOW -->
 
         <circle
             cx="0"
             cy="0"
-            r="15"
+            r="18"
             fill="{GREEN}"
-            opacity="0.15"
-        >
+            opacity="0.14">
 
             <animateMotion
-                dur="24s"
+                dur="30s"
                 repeatCount="indefinite"
+                rotate="auto"
                 path="{PATH}"
             />
 
         </circle>
 
 
-        <!-- Head -->
+        <!-- OUTER HEAD -->
 
         <circle
             cx="0"
             cy="0"
-            r="10"
+            r="11"
             fill="{GREEN}"
             stroke="{BLACK}"
             stroke-width="2"
         />
 
 
-        <!-- Face -->
+        <!-- FACE -->
 
         <ellipse
             cx="0"
             cy="1"
-            rx="8"
-            ry="7"
+            rx="8.5"
+            ry="8"
             fill="#06140d"
         />
 
@@ -441,17 +438,17 @@ def create_head():
         <!-- LEFT EYE -->
 
         <ellipse
-            cx="-3.5"
-            cy="-2.5"
-            rx="2"
-            ry="2.5"
+            cx="-3.6"
+            cy="-3"
+            rx="2.2"
+            ry="2.7"
             fill="{WHITE}"
         />
 
         <circle
-            cx="-3.5"
-            cy="-2.2"
-            r="1"
+            cx="-3.6"
+            cy="-2.8"
+            r="1.1"
             fill="{RED}"
         />
 
@@ -459,17 +456,17 @@ def create_head():
         <!-- RIGHT EYE -->
 
         <ellipse
-            cx="3.5"
-            cy="-2.5"
-            rx="2"
-            ry="2.5"
+            cx="3.6"
+            cy="-3"
+            rx="2.2"
+            ry="2.7"
             fill="{WHITE}"
         />
 
         <circle
-            cx="3.5"
-            cy="-2.2"
-            r="1"
+            cx="3.6"
+            cy="-2.8"
+            r="1.1"
             fill="{RED}"
         />
 
@@ -478,11 +475,11 @@ def create_head():
 
         <path
             d="
-                M -6 2
-                Q 0 9 6 2
-                Q 0 5 -6 2
+                M -7 2
+                Q 0 10 7 2
+                Q 0 6 -7 2
             "
-            fill="#170008"
+            fill="#150006"
             stroke="{BLACK}"
             stroke-width="1"
         />
@@ -492,17 +489,17 @@ def create_head():
 
         <path
             d="
-                M -4 3
-                L -2.5 6
-                L -1 3
+                M -5 3
+                L -3.2 7
+                L -1.5 3
 
-                M 1 3
-                L 2.5 6
-                L 4 3
+                M 1.5 3
+                L 3.2 7
+                L 5 3
             "
             fill="{WHITE}"
             stroke="{WHITE}"
-            stroke-width="1.4"
+            stroke-width="1.5"
         />
 
 
@@ -510,42 +507,53 @@ def create_head():
 
         <path
             d="
-                M 0 5
-                Q -1 9 -3 9
+                M 0 6
+                Q -1.5 10 -3.5 10
 
-                M 0 5
-                Q 1 9 3 9
+                M 0 6
+                Q 1.5 10 3.5 10
             "
             fill="none"
             stroke="{RED}"
-            stroke-width="1.3"
+            stroke-width="1.4"
             stroke-linecap="round"
         />
 
 
-        <!-- HORNS -->
+        <!-- LEFT HORN -->
 
         <path
             d="
-                M -6 -7
-                L -9 -12
-                L -3 -9
-
-                M 6 -7
-                L 9 -12
-                L 3 -9
+                M -6 -8
+                L -10 -14
+                L -3 -10
             "
-            fill="{GREEN}"
+            fill="{GREEN2}"
             stroke="{BLACK}"
             stroke-width="1"
         />
 
 
-        <!-- MOVEMENT -->
+        <!-- RIGHT HORN -->
+
+        <path
+            d="
+                M 6 -8
+                L 10 -14
+                L 3 -10
+            "
+            fill="{GREEN2}"
+            stroke="{BLACK}"
+            stroke-width="1"
+        />
+
+
+        <!-- HEAD MOVEMENT -->
 
         <animateMotion
-            dur="24s"
+            dur="30s"
             repeatCount="indefinite"
+            rotate="auto"
             path="{PATH}"
         />
 
@@ -561,11 +569,12 @@ def create_svg():
 
     grid_svg = create_grid()
 
-    eating_svg = create_eating_effect()
+    eating_svg = create_eating()
 
     body_svg = create_body()
 
     head_svg = create_head()
+
 
     return f'''<?xml version="1.0" encoding="UTF-8"?>
 
@@ -574,7 +583,7 @@ def create_svg():
     width="100%"
     viewBox="0 0 {WIDTH} {HEIGHT}"
     role="img"
-    aria-label="Animated monster GitHub contribution snake"
+    aria-label="Venom style monster GitHub contribution snake"
 >
 
     <defs>
@@ -588,7 +597,7 @@ def create_svg():
         >
 
             <feGaussianBlur
-                stdDeviation="3"
+                stdDeviation="2.8"
                 result="blur"
             />
 
@@ -610,12 +619,12 @@ def create_svg():
     <rect
         width="100%"
         height="100%"
-        rx="12"
-        fill="{BACKGROUND}"
+        rx="10"
+        fill="{BG}"
     />
 
 
-    <!-- CONTRIBUTION GRID -->
+    <!-- CONTRIBUTIONS -->
 
     <g>
         {grid_svg}
@@ -643,13 +652,13 @@ def create_svg():
     <!-- LABEL -->
 
     <text
-        x="10"
-        y="{HEIGHT - 7}"
+        x="8"
+        y="{HEIGHT - 6}"
         font-family="Arial, sans-serif"
-        font-size="8"
-        fill="#6b7280"
+        font-size="7"
+        fill="#64748b"
     >
-        🐍 MONSTER MODE • {USERNAME} • EATING CONTRIBUTIONS
+        MONSTER MODE • {USERNAME} • DEVOURING CONTRIBUTIONS
     </text>
 
 </svg>
@@ -657,32 +666,26 @@ def create_svg():
 
 
 # ============================================================
-# SAVE
+# OUTPUT
 # ============================================================
-
-light_file = OUTPUT_DIR / "github-contribution-monster.svg"
-
-dark_file = OUTPUT_DIR / "github-contribution-monster-dark.svg"
-
 
 svg = create_svg()
 
 
-light_file.write_text(
-    svg,
-    encoding="utf-8"
-)
+light = OUTPUT_DIR / "github-contribution-monster.svg"
 
-dark_file.write_text(
-    svg,
-    encoding="utf-8"
-)
+dark = OUTPUT_DIR / "github-contribution-monster-dark.svg"
 
 
+light.write_text(svg, encoding="utf-8")
+
+dark.write_text(svg, encoding="utf-8")
+
+
+print()
 print("========================================")
-print(" MONSTER SNAKE GENERATED")
+print(" MONSTER SNAKE GENERATED SUCCESSFULLY")
 print("========================================")
-print("User:", USERNAME)
-print("Contributions:", calendar["totalContributions"])
-print("Output:", light_file)
-print("Output:", dark_file)
+print("Files:")
+print(light)
+print(dark)
