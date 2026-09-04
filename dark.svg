@@ -1,320 +1,1627 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 1180 610"
+     width="100%"
+     height="100%"
+     max-width="1180">
 
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 610" width="100%" height="100%" max-width="1180">
   <defs>
-    <!-- Retro Cyber CSS Styles -->
+
+    <!-- =====================================================
+         RETRO CYBER CSS STYLES
+         ===================================================== -->
+
     <style>
+
       @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap');
-      
-      .retro-scanline { animation: crtScan 5s linear indefinite; }
-      @keyframes crtScan { 0% { transform: translateY(0px); } 100% { transform: translateY(610px); } }
 
-      .retro-float { animation: retroFloat 4s ease-in-out indefinite alternate; }
-      @keyframes retroFloat { 0% { transform: translateY(0px); } 100% { transform: translateY(-7px); } }
 
-      .retro-pulse { animation: neonPulse 2s ease-in-out indefinite alternate; }
-      @keyframes neonPulse { 0% { opacity: 0.7; filter: drop-shadow(0 0 4px #00F0FF); } 100% { opacity: 1; filter: drop-shadow(0 0 12px #FF007F); } }
+      /* =====================================================
+         CRT SCANLINE
+         ===================================================== */
 
-      .crt-flicker { animation: flicker 0.15s infinite; }
-      @keyframes flicker { 0% { opacity: 0.97; } 50% { opacity: 1; } 100% { opacity: 0.98; } }
+      .retro-scanline {
+        animation: crtScan 5s linear infinite;
+      }
 
-      .blink-cursor { animation: blink 0.8s infinite; }
-      @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+      @keyframes crtScan {
+        0% {
+          transform: translateY(0px);
+        }
 
-      .shimmer-edge { animation: borderShimmer 6s linear indefinite; stroke-dasharray: 180 500; }
-      @keyframes borderShimmer { 0% { stroke-dashoffset: 680; } 100% { stroke-dashoffset: 0; } }
+        100% {
+          transform: translateY(610px);
+        }
+      }
 
-      .grid-move { animation: gridScroll 10s linear indefinite; }
-      @keyframes gridScroll { 0% { transform: translateY(0px); } 100% { transform: translateY(40px); } }
 
-      .phrase-1 { animation: cycleP1 12s infinite; }
-      .phrase-2 { animation: cycleP2 12s infinite; }
-      .phrase-3 { animation: cycleP3 12s infinite; }
-      .phrase-4 { animation: cycleP4 12s infinite; }
+      /* =====================================================
+         FLOATING ANIMATION
+         ===================================================== */
 
-      @keyframes cycleP1 { 0%, 22% { opacity: 1; transform: translateY(0); } 25%, 97% { opacity: 0; transform: translateY(-6px); } 100% { opacity: 1; transform: translateY(0); } }
-      @keyframes cycleP2 { 0%, 24% { opacity: 0; transform: translateY(6px); } 27%, 47% { opacity: 1; transform: translateY(0); } 50%, 100% { opacity: 0; transform: translateY(-6px); } }
-      @keyframes cycleP3 { 0%, 49% { opacity: 0; transform: translateY(6px); } 52%, 72% { opacity: 1; transform: translateY(0); } 75%, 100% { opacity: 0; transform: translateY(-6px); } }
-      @keyframes cycleP4 { 0%, 74% { opacity: 0; transform: translateY(6px); } 77%, 97% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-6px); } }
+      .retro-float {
+        animation: retroFloat 4s ease-in-out infinite alternate;
+      }
 
-      .retro-pill { transition: all 0.25s ease; cursor: pointer; }
-      .retro-pill:hover { transform: translateY(-3px) scale(1.05); fill: #121224; stroke: #00F0FF; filter: drop-shadow(0 0 8px #00F0FF); }
+      @keyframes retroFloat {
+        0% {
+          transform: translateY(0px);
+        }
 
-      .retro-icon { transition: all 0.25s ease; cursor: pointer; }
-      .retro-icon:hover { transform: translateY(-3px); stroke: #FF007F; filter: drop-shadow(0 0 10px #FF007F); }
+        100% {
+          transform: translateY(-7px);
+        }
+      }
+
+
+      /* =====================================================
+         NEON PULSE
+         ===================================================== */
+
+      .retro-pulse {
+        animation: neonPulse 2s ease-in-out infinite alternate;
+      }
+
+      @keyframes neonPulse {
+
+        0% {
+          opacity: 0.7;
+          filter: drop-shadow(0 0 4px #00F0FF);
+        }
+
+        100% {
+          opacity: 1;
+          filter: drop-shadow(0 0 12px #FF007F);
+        }
+
+      }
+
+
+      /* =====================================================
+         CRT FLICKER
+         ===================================================== */
+
+      .crt-flicker {
+        animation: flicker 0.15s infinite;
+      }
+
+      @keyframes flicker {
+
+        0% {
+          opacity: 0.97;
+        }
+
+        50% {
+          opacity: 1;
+        }
+
+        100% {
+          opacity: 0.98;
+        }
+
+      }
+
+
+      /* =====================================================
+         BLINKING CURSOR
+         ===================================================== */
+
+      .blink-cursor {
+        animation: blink 0.8s infinite;
+      }
+
+      @keyframes blink {
+
+        0%,
+        100% {
+          opacity: 1;
+        }
+
+        50% {
+          opacity: 0;
+        }
+
+      }
+
+
+      /* =====================================================
+         BORDER SHIMMER
+         ===================================================== */
+
+      .shimmer-edge {
+        animation: borderShimmer 6s linear infinite;
+        stroke-dasharray: 180 500;
+      }
+
+      @keyframes borderShimmer {
+
+        0% {
+          stroke-dashoffset: 680;
+        }
+
+        100% {
+          stroke-dashoffset: 0;
+        }
+
+      }
+
+
+      /* =====================================================
+         GRID MOVEMENT
+         ===================================================== */
+
+      .grid-move {
+        animation: gridScroll 10s linear infinite;
+      }
+
+      @keyframes gridScroll {
+
+        0% {
+          transform: translateY(0px);
+        }
+
+        100% {
+          transform: translateY(40px);
+        }
+
+      }
+
+
+      /* =====================================================
+         SUBTITLE ANIMATION
+         
+         ONLY 3 PHRASES
+         ===================================================== */
+
+      .phrase-1 {
+        animation: cycleP1 12s infinite;
+      }
+
+      .phrase-2 {
+        animation: cycleP2 12s infinite;
+      }
+
+      .phrase-3 {
+        animation: cycleP3 12s infinite;
+      }
+
+
+      /* =====================================================
+         PHRASE 1
+         ===================================================== */
+
+      @keyframes cycleP1 {
+
+        0%,
+        30% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        33%,
+        97% {
+          opacity: 0;
+          transform: translateY(-6px);
+        }
+
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+      }
+
+
+      /* =====================================================
+         PHRASE 2
+         ===================================================== */
+
+      @keyframes cycleP2 {
+
+        0%,
+        32% {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+
+        35%,
+        63% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        66%,
+        100% {
+          opacity: 0;
+          transform: translateY(-6px);
+        }
+
+      }
+
+
+      /* =====================================================
+         PHRASE 3
+         ===================================================== */
+
+      @keyframes cycleP3 {
+
+        0%,
+        65% {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+
+        68%,
+        97% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        100% {
+          opacity: 0;
+          transform: translateY(-6px);
+        }
+
+      }
+
+
+      /* =====================================================
+         RETRO PILLS
+         ===================================================== */
+
+      .retro-pill {
+        transition: all 0.25s ease;
+        cursor: pointer;
+      }
+
+      .retro-pill:hover {
+        transform: translateY(-3px) scale(1.05);
+        fill: #121224;
+        stroke: #00F0FF;
+        filter: drop-shadow(0 0 8px #00F0FF);
+      }
+
+
+      /* =====================================================
+         RETRO ICONS
+         ===================================================== */
+
+      .retro-icon {
+        transition: all 0.25s ease;
+        cursor: pointer;
+      }
+
+      .retro-icon:hover {
+        transform: translateY(-3px);
+        stroke: #FF007F;
+        filter: drop-shadow(0 0 10px #FF007F);
+      }
+
     </style>
 
-    <clipPath id="panelClipRightRetro">
-      <rect width="665" height="550" rx="16" />
-    </clipPath>
 
-    <!-- Retro Neon Gradients -->
-    <linearGradient id="retroNeonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#00F0FF">
-        <animate attributeName="stop-color" values="#00F0FF;#FF007F;#F59E0B;#00F0FF" dur="6s" repeatCount="indefinite" />
+    <!-- =====================================================
+         GRADIENTS
+         ===================================================== -->
+
+    <linearGradient
+      id="retroNeonGrad"
+      x1="0%"
+      y1="0%"
+      x2="100%"
+      y2="100%">
+
+      <stop
+        offset="0%"
+        stop-color="#00F0FF">
+
+        <animate
+          attributeName="stop-color"
+          values="#00F0FF;#FF007F;#F59E0B;#00F0FF"
+          dur="6s"
+          repeatCount="indefinite" />
+
       </stop>
-      <stop offset="50%" stop-color="#FF007F">
-        <animate attributeName="stop-color" values="#FF007F;#F59E0B;#00F0FF;#FF007F" dur="6s" repeatCount="indefinite" />
+
+      <stop
+        offset="50%"
+        stop-color="#FF007F">
+
+        <animate
+          attributeName="stop-color"
+          values="#FF007F;#F59E0B;#00F0FF;#FF007F"
+          dur="6s"
+          repeatCount="indefinite" />
+
       </stop>
-      <stop offset="100%" stop-color="#F59E0B">
-        <animate attributeName="stop-color" values="#F59E0B;#00F0FF;#FF007F;#F59E0B" dur="6s" repeatCount="indefinite" />
+
+      <stop
+        offset="100%"
+        stop-color="#F59E0B">
+
+        <animate
+          attributeName="stop-color"
+          values="#F59E0B;#00F0FF;#FF007F;#F59E0B"
+          dur="6s"
+          repeatCount="indefinite" />
+
       </stop>
+
     </linearGradient>
 
-    <linearGradient id="asciiNeonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#00F0FF" />
-      <stop offset="50%" stop-color="#A855F7" />
-      <stop offset="100%" stop-color="#FF007F" />
+
+    <!-- =====================================================
+         ASCII GRADIENT
+         ===================================================== -->
+
+    <linearGradient
+      id="asciiNeonGrad"
+      x1="0%"
+      y1="0%"
+      x2="100%"
+      y2="100%">
+
+      <stop
+        offset="0%"
+        stop-color="#00F0FF" />
+
+      <stop
+        offset="50%"
+        stop-color="#A855F7" />
+
+      <stop
+        offset="100%"
+        stop-color="#FF007F" />
+
     </linearGradient>
 
-    <linearGradient id="retroDarkGlass" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0A0A16" stop-opacity="0.95" />
-      <stop offset="100%" stop-color="#05050C" stop-opacity="0.98" />
+
+    <!-- =====================================================
+         DARK GLASS
+         ===================================================== -->
+
+    <linearGradient
+      id="retroDarkGlass"
+      x1="0%"
+      y1="0%"
+      x2="100%"
+      y2="100%">
+
+      <stop
+        offset="0%"
+        stop-color="#0A0A16"
+        stop-opacity="0.95" />
+
+      <stop
+        offset="100%"
+        stop-color="#05050C"
+        stop-opacity="0.98" />
+
     </linearGradient>
 
-    <filter id="neonGlowDark" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="5" result="blur" />
+
+    <!-- =====================================================
+         NEON GLOW
+         ===================================================== -->
+
+    <filter
+      id="neonGlowDark"
+      x="-20%"
+      y="-20%"
+      width="140%"
+      height="140%">
+
+      <feGaussianBlur
+        stdDeviation="5"
+        result="blur" />
+
       <feMerge>
+
         <feMergeNode in="blur" />
+
         <feMergeNode in="SourceGraphic" />
+
       </feMerge>
+
     </filter>
+
+
+    <!-- =====================================================
+         RETRO SHADOW
+         ===================================================== -->
 
     <filter id="retroShadow">
-      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#FF007F" flood-opacity="0.25" />
+
+      <feDropShadow
+        dx="0"
+        dy="14"
+        stdDeviation="18"
+        flood-color="#FF007F"
+        flood-opacity="0.25" />
+
     </filter>
+
   </defs>
 
-  <!-- Deep Retro Obsidian Canvas -->
-  <rect width="1180" height="610" rx="20" fill="#05050A" />
 
-  <!-- Animated Synthwave Perspective Grid Lines at Bottom -->
-  <g class="grid-move" stroke="rgba(0, 240, 255, 0.08)" stroke-width="1">
-    <path d="M 0,100 L 1180,100 M 0,140 L 1180,140 M 0,180 L 1180,180 M 0,220 L 1180,220 M 0,260 L 1180,260 M 0,300 L 1180,300 M 0,340 L 1180,340 M 0,380 L 1180,380 M 0,420 L 1180,420 M 0,460 L 1180,460 M 0,500 L 1180,500 M 0,540 L 1180,540 M 0,580 L 1180,580" />
-    <path d="M 100,0 L 100,610 M 200,0 L 200,610 M 300,0 L 300,610 M 400,0 L 400,610 M 500,0 L 500,610 M 600,0 L 600,610 M 700,0 L 700,610 M 800,0 L 800,610 M 900,0 L 900,610 M 1000,0 L 1000,610 M 1100,0 L 1100,610" />
+  <!-- =======================================================
+       BACKGROUND
+       ======================================================= -->
+
+  <rect
+    width="1180"
+    height="610"
+    rx="20"
+    fill="#05050A" />
+
+
+  <!-- =======================================================
+       SYNTHWAVE GRID
+       ======================================================= -->
+
+  <g
+    class="grid-move"
+    stroke="rgba(0, 240, 255, 0.08)"
+    stroke-width="1">
+
+    <path
+      d="
+        M 0,100 L 1180,100
+        M 0,140 L 1180,140
+        M 0,180 L 1180,180
+        M 0,220 L 1180,220
+        M 0,260 L 1180,260
+        M 0,300 L 1180,300
+        M 0,340 L 1180,340
+        M 0,380 L 1180,380
+        M 0,420 L 1180,420
+        M 0,460 L 1180,460
+        M 0,500 L 1180,500
+        M 0,540 L 1180,540
+        M 0,580 L 1180,580" />
+
+    <path
+      d="
+        M 100,0 L 100,610
+        M 200,0 L 200,610
+        M 300,0 L 300,610
+        M 400,0 L 400,610
+        M 500,0 L 500,610
+        M 600,0 L 600,610
+        M 700,0 L 700,610
+        M 800,0 L 800,610
+        M 900,0 L 900,610
+        M 1000,0 L 1000,610
+        M 1100,0 L 1100,610" />
+
   </g>
 
-  <!-- Retro Sun Glow Gradient in Horizon -->
-  <radialGradient id="synthSun" cx="50%" cy="100%" r="70%">
-    <stop offset="0%" stop-color="#FF007F" stop-opacity="0.2" />
-    <stop offset="50%" stop-color="#7C3AED" stop-opacity="0.1" />
-    <stop offset="100%" stop-color="#05050A" stop-opacity="0" />
+
+  <!-- =======================================================
+       SYNTHWAVE SUN
+       ======================================================= -->
+
+  <radialGradient
+    id="synthSun"
+    cx="50%"
+    cy="100%"
+    r="70%">
+
+    <stop
+      offset="0%"
+      stop-color="#FF007F"
+      stop-opacity="0.2" />
+
+    <stop
+      offset="50%"
+      stop-color="#7C3AED"
+      stop-opacity="0.1" />
+
+    <stop
+      offset="100%"
+      stop-color="#05050A"
+      stop-opacity="0" />
+
   </radialGradient>
-  <rect width="1180" height="610" rx="20" fill="url(#synthSun)" />
 
-  <!-- Moving CRT Scanline Sweep -->
-  <rect class="retro-scanline" width="1180" height="3" fill="url(#retroNeonGrad)" opacity="0.3" />
 
-  <!-- Outer Neon Border Frame -->
-  <rect x="2" y="2" width="1176" height="606" rx="19" fill="none" stroke="rgba(0, 240, 255, 0.15)" stroke-width="1.5" />
+  <rect
+    width="1180"
+    height="610"
+    rx="20"
+    fill="url(#synthSun)" />
 
-  <!-- LEFT SIDE: RETRO CRT CYBER TERMINAL PANEL -->
-  <g transform="translate(30, 30)" filter="url(#retroShadow)">
-    <!-- Container Card -->
-    <rect width="425" height="550" rx="16" fill="url(#retroDarkGlass)" stroke="rgba(0, 240, 255, 0.2)" stroke-width="1.5" />
-    <rect class="shimmer-edge" width="425" height="550" rx="16" fill="none" stroke="url(#retroNeonGrad)" stroke-width="2" opacity="0.7" />
 
-    <!-- Retro Terminal Header -->
-    <g transform="translate(0, 0)">
-      <path d="M 0,16 A 16,16 0 0,1 16,0 L 409,0 A 16,16 0 0,1 425,16 L 425,38 L 0,38 Z" fill="#0C0C1E" opacity="0.95" />
-      <circle cx="24" cy="19" r="5" fill="#FF007F" />
-      <circle cx="40" cy="19" r="5" fill="#F59E0B" />
-      <circle cx="56" cy="19" r="5" fill="#00F0FF" />
-      <text x="212" y="23" font-family="'Fira Code', monospace" font-size="12" fill="#00F0FF" text-anchor="middle" font-weight="700" letter-spacing="1">RETRO-CRT-TERMINAL</text>
-      <line x1="0" y1="38" x2="425" y2="38" stroke="rgba(0, 240, 255, 0.2)" stroke-width="1" />
-    </g>
+  <!-- =======================================================
+       CRT SCANLINE
+       ======================================================= -->
 
-    <!-- Floating Retro Cyber ASCII Box -->
-    <g class="retro-float crt-flicker" transform="translate(22, 58)">
-      <g font-family="'Fira Code', 'VT323', 'Courier New', monospace" font-size="12" fill="url(#asciiNeonGrad)" font-weight="700" filter="url(#neonGlowDark)">
-        <text y="20">┌──────────────────────────────────────┐</text>
-        <text y="38">│  __  __  SHREEVISHNU R S             │</text>
-        <text y="56">│ /  \/  \ Software &amp; Embedded Eng.    │</text>
-        <text y="74">│ \  /\  / SYSTEM: SHREEVISHNU_OS v2.4 │</text>
-        <text y="92">│  \/  \/                              │</text>
-        <text y="110">├──────────────────────────────────────┤</text>
-        <text y="128">│           ____                       │</text>
-        <text y="146">│         .╱    ╲.   [HARDWARE + AI]   │</text>
-        <text y="164">│        ╱  ●  ●  ╲  STATUS: ONLINE    │</text>
-        <text y="182">│       │    └┘    │ ARCH: JAVA / C++  │</text>
-        <text y="200">│        ╲  ───  ╱   CORE: ESP32/STM32 │</text>
-        <text y="218">│         '────'     NET: MQTT/MODBUS  │</text>
-        <text y="236">│        ╱│ ▓▓▓ │╲   VISION: YOLO/CLIP │</text>
-        <text y="254">│       ╱ │ ▓▓▓ │ ╲                    │</text>
-        <text y="272">├──────────────────────────────────────┤</text>
-        <text y="290">│ &gt; BAUD: 115200 Baud // RS485 Modbus │</text>
-        <text y="308">│ &gt; EXEC: Vision_Pipeline_v2.py        │</text>
-        <text y="326">│ &gt; CORE_HEALTH: 100% OPERATIONAL     │</text>
-        <text y="344">└──────────────────────────────────────┘</text>
+  <rect
+    class="retro-scanline"
+    width="1180"
+    height="3"
+    fill="url(#retroNeonGrad)"
+    opacity="0.3" />
+
+
+  <!-- =======================================================
+       OUTER BORDER
+       ======================================================= -->
+
+  <rect
+    x="2"
+    y="2"
+    width="1176"
+    height="606"
+    rx="19"
+    fill="none"
+    stroke="rgba(0, 240, 255, 0.15)"
+    stroke-width="1.5" />
+
+
+  <!-- =======================================================
+       LEFT TERMINAL PANEL
+       ======================================================= -->
+
+  <g
+    transform="translate(30, 30)"
+    filter="url(#retroShadow)">
+
+    <rect
+      width="425"
+      height="550"
+      rx="16"
+      fill="url(#retroDarkGlass)"
+      stroke="rgba(0, 240, 255, 0.2)"
+      stroke-width="1.5" />
+
+
+    <rect
+      class="shimmer-edge"
+      width="425"
+      height="550"
+      rx="16"
+      fill="none"
+      stroke="url(#retroNeonGrad)"
+      stroke-width="2"
+      opacity="0.7" />
+
+
+    <!-- =====================================================
+         LEFT TERMINAL HEADER
+         ===================================================== -->
+
+    <path
+      d="
+        M 0,16
+        A 16,16 0 0,1 16,0
+        L 409,0
+        A 16,16 0 0,1 425,16
+        L 425,38
+        L 0,38
+        Z"
+      fill="#0C0C1E"
+      opacity="0.95" />
+
+
+    <circle
+      cx="24"
+      cy="19"
+      r="5"
+      fill="#FF007F" />
+
+    <circle
+      cx="40"
+      cy="19"
+      r="5"
+      fill="#F59E0B" />
+
+    <circle
+      cx="56"
+      cy="19"
+      r="5"
+      fill="#00F0FF" />
+
+
+    <text
+      x="212"
+      y="23"
+      font-family="'Fira Code', monospace"
+      font-size="12"
+      fill="#00F0FF"
+      text-anchor="middle"
+      font-weight="700"
+      letter-spacing="1">
+
+      RETRO-CRT-TERMINAL
+
+    </text>
+
+
+    <line
+      x1="0"
+      y1="38"
+      x2="425"
+      y2="38"
+      stroke="rgba(0, 240, 255, 0.2)"
+      stroke-width="1" />
+
+
+    <!-- =====================================================
+         ASCII TERMINAL
+         ===================================================== -->
+
+    <g
+      class="retro-float crt-flicker"
+      transform="translate(22, 58)">
+
+      <g
+        font-family="'Fira Code', 'VT323', 'Courier New', monospace"
+        font-size="12"
+        fill="url(#asciiNeonGrad)"
+        font-weight="700"
+        filter="url(#neonGlowDark)">
+
+        <text y="20">
+          ┌──────────────────────────────────────┐
+        </text>
+
+        <text y="38">
+          │  __  __  SHREEVISHNU R S             │
+        </text>
+
+        <text y="56">
+          │ /  \/  \ Software &amp; Embedded Eng.    │
+        </text>
+
+        <text y="74">
+          │ \  /\  / SYSTEM: SHREEVISHNU_OS v2.4 │
+        </text>
+
+        <text y="92">
+          │  \/  \/                              │
+        </text>
+
+        <text y="110">
+          ├──────────────────────────────────────┤
+        </text>
+
+        <text y="128">
+          │           ____                       │
+        </text>
+
+        <text y="146">
+          │         .╱    ╲.   [HARDWARE + AI]   │
+        </text>
+
+        <text y="164">
+          │        ╱  ●  ●  ╲  STATUS: ONLINE    │
+        </text>
+
+        <text y="182">
+          │       │    └┘    │ ARCH: JAVA / C++  │
+        </text>
+
+        <text y="200">
+          │        ╲  ───  ╱   CORE: ESP32/STM32 │
+        </text>
+
+        <text y="218">
+          │         '────'     NET: MQTT/MODBUS  │
+        </text>
+
+        <text y="236">
+          │        ╱│ ▓▓▓ │╲   VISION: YOLO/CLIP │
+        </text>
+
+        <text y="254">
+          │       ╱ │ ▓▓▓ │ ╲                    │
+        </text>
+
+        <text y="272">
+          ├──────────────────────────────────────┤
+        </text>
+
+        <text y="290">
+          │ &gt; BAUD: 115200 Baud // RS485 Modbus │
+        </text>
+
+        <text y="308">
+          │ &gt; EXEC: Vision_Pipeline_v2.py       │
+        </text>
+
+        <text y="326">
+          │ &gt; CORE_HEALTH: 100% OPERATIONAL     │
+        </text>
+
+        <text y="344">
+          └──────────────────────────────────────┘
+        </text>
+
       </g>
+
     </g>
 
-    <!-- Retro Terminal Footer Status Box -->
+
+    <!-- =====================================================
+         LEFT TERMINAL FOOTER
+         ===================================================== -->
+
     <g transform="translate(25, 435)">
-      <rect width="375" height="85" rx="10" fill="#04040A" stroke="rgba(255, 0, 127, 0.3)" stroke-width="1" />
-      <g transform="translate(15, 24)" font-family="'Fira Code', monospace" font-size="11" fill="#00F0FF">
-        <text x="0" y="0"><tspan fill="#FF007F">●</tspan> RETRO_SYS: ONLINE | <tspan fill="#F59E0B">BUS: MODBUS</tspan></text>
-        <text x="0" y="20" fill="#94A3B8">&gt; streaming telemetry -&gt; mqtt://broker</text>
-        <text x="0" y="40" fill="#FF007F">&gt; status: active stream<tspan class="blink-cursor" fill="#00F0FF">█</tspan></text>
+
+      <rect
+        width="375"
+        height="85"
+        rx="10"
+        fill="#04040A"
+        stroke="rgba(255, 0, 127, 0.3)"
+        stroke-width="1" />
+
+
+      <g
+        transform="translate(15, 24)"
+        font-family="'Fira Code', monospace"
+        font-size="11"
+        fill="#00F0FF">
+
+        <text x="0" y="0">
+
+          <tspan fill="#FF007F">
+            ●
+          </tspan>
+
+          RETRO_SYS: ONLINE |
+
+          <tspan fill="#F59E0B">
+            BUS: MODBUS
+          </tspan>
+
+        </text>
+
+
+        <text
+          x="0"
+          y="20"
+          fill="#94A3B8">
+
+          &gt; streaming telemetry -&gt; mqtt://broker
+
+        </text>
+
+
+        <text
+          x="0"
+          y="40"
+          fill="#FF007F">
+
+          &gt; status: active stream
+
+          <tspan
+            class="blink-cursor"
+            fill="#00F0FF">
+
+            █
+
+          </tspan>
+
+        </text>
+
       </g>
+
     </g>
+
   </g>
 
-  <!-- RIGHT SIDE: RETRO SYNTHWAVE TERMINAL WINDOW -->
-  <g transform="translate(485, 30)" filter="url(#retroShadow)">
-    <rect width="665" height="550" rx="16" fill="url(#retroDarkGlass)" stroke="rgba(0, 240, 255, 0.2)" stroke-width="1.5" />
-    <rect class="shimmer-edge" width="665" height="550" rx="16" fill="none" stroke="url(#retroNeonGrad)" stroke-width="2" opacity="0.4" />
 
-    <!-- Terminal Header -->
-    <g transform="translate(0, 0)">
-      <path d="M 0,16 A 16,16 0 0,1 16,0 L 649,0 A 16,16 0 0,1 665,16 L 665,38 L 0,38 Z" fill="#0C0C1E" opacity="0.95" />
-      <circle cx="24" cy="19" r="5" fill="#FF007F" />
-      <circle cx="40" cy="19" r="5" fill="#F59E0B" />
-      <circle cx="56" cy="19" r="5" fill="#00F0FF" />
-      <line x1="0" y1="38" x2="665" y2="38" stroke="rgba(0, 240, 255, 0.2)" stroke-width="1" />
-    </g>
+  <!-- =======================================================
+       RIGHT PANEL
+       ======================================================= -->
+
+  <g
+    transform="translate(485, 30)"
+    filter="url(#retroShadow)">
+
+    <rect
+      width="665"
+      height="550"
+      rx="16"
+      fill="url(#retroDarkGlass)"
+      stroke="rgba(0, 240, 255, 0.2)"
+      stroke-width="1.5" />
+
+
+    <rect
+      class="shimmer-edge"
+      width="665"
+      height="550"
+      rx="16"
+      fill="none"
+      stroke="url(#retroNeonGrad)"
+      stroke-width="2"
+      opacity="0.4" />
+
+
+    <!-- =====================================================
+         RIGHT TERMINAL HEADER
+         ===================================================== -->
+
+    <path
+      d="
+        M 0,16
+        A 16,16 0 0,1 16,0
+        L 649,0
+        A 16,16 0 0,1 665,16
+        L 665,38
+        L 0,38
+        Z"
+      fill="#0C0C1E"
+      opacity="0.95" />
+
+
+    <circle
+      cx="24"
+      cy="19"
+      r="5"
+      fill="#FF007F" />
+
+    <circle
+      cx="40"
+      cy="19"
+      r="5"
+      fill="#F59E0B" />
+
+    <circle
+      cx="56"
+      cy="19"
+      r="5"
+      fill="#00F0FF" />
+
+
+    <line
+      x1="0"
+      y1="38"
+      x2="665"
+      y2="38"
+      stroke="rgba(0, 240, 255, 0.2)"
+      stroke-width="1" />
+
+
+    <!-- =====================================================
+         RIGHT CONTENT
+         ===================================================== -->
 
     <g transform="translate(40, 82)">
-      <!-- Main Retro Greeting -->
-      <text font-family="'Inter', -apple-system, sans-serif" font-size="34" font-weight="800" fill="#F8FAFC" letter-spacing="-0.5">
-        Hi 👋 I'm <tspan fill="url(#retroNeonGrad)">Shreevishnu R S</tspan>
+
+
+      <!-- =================================================
+           GREETING
+           ================================================= -->
+
+      <text
+        font-family="'Inter', -apple-system, sans-serif"
+        font-size="34"
+        font-weight="800"
+        fill="#F8FAFC"
+        letter-spacing="-0.5">
+
+        Hi 👋 I'm
+
+        <tspan fill="url(#retroNeonGrad)">
+          Shreevishnu R S
+        </tspan>
+
       </text>
 
-      <!-- Animated Rotating Typing Subtitle -->
+
+      <!-- =================================================
+           ANIMATED SUBTITLE
+           ================================================= -->
+
       <g transform="translate(0, 42)">
-        <g font-family="'Fira Code', 'JetBrains Mono', monospace" font-size="16" font-weight="700">
-          <text class="phrase-1" fill="#00F0FF">&gt; Software &amp; Embedded Systems Engineer</text>
-          <text class="phrase-2" fill="#FF007F">&gt; Java • System Design • DSA Specialist</text>
-          <text class="phrase-3" fill="#F59E0B">&gt; IoT Telemetry • Modbus &amp; MQTT Protocol</text>
-          <text class="phrase-4" fill="#A855F7">&gt; Edge AI &amp; Computer Vision (YOLO/CLIP)</text>
+
+        <g
+          font-family="'Fira Code', 'JetBrains Mono', monospace"
+          font-size="16"
+          font-weight="700">
+
+
+          <!-- =============================================
+               PHRASE 1
+               ============================================= -->
+
+          <text
+            class="phrase-1"
+            fill="#00F0FF">
+
+            &gt; Software &amp; Embedded Systems Engineer
+
+          </text>
+
+
+          <!-- =============================================
+               PHRASE 2
+               ============================================= -->
+
+          <text
+            class="phrase-2"
+            fill="#F59E0B">
+
+            &gt; IoT Telemetry • Modbus &amp; MQTT Protocol
+
+          </text>
+
+
+          <!-- =============================================
+               PHRASE 3
+               ============================================= -->
+
+          <text
+            class="phrase-3"
+            fill="#A855F7">
+
+            &gt; Edge AI &amp; Computer Vision (YOLO/CLIP)
+
+          </text>
+
         </g>
-        <rect class="blink-cursor" x="430" y="-14" width="9" height="18" fill="#FF007F" />
+
+
+        <!-- Blinking Cursor -->
+
+        <rect
+          class="blink-cursor"
+          x="430"
+          y="-14"
+          width="9"
+          height="18"
+          fill="#FF007F" />
+
       </g>
 
-      <!-- Retro Neon Line -->
-      <line x1="0" y1="62" x2="585" y2="62" stroke="url(#retroNeonGrad)" stroke-width="1.5" opacity="0.6" />
 
-      <!-- Retro Details Section -->
-      <g transform="translate(0, 85)" font-family="'Inter', sans-serif" font-size="14" fill="#CBD5E1" font-weight="400">
+      <!-- =================================================
+           NEON DIVIDER
+           ================================================= -->
+
+      <line
+        x1="0"
+        y1="62"
+        x2="585"
+        y2="62"
+        stroke="url(#retroNeonGrad)"
+        stroke-width="1.5"
+        opacity="0.6" />
+
+
+      <!-- =================================================
+           PERSONAL DETAILS
+           ================================================= -->
+
+      <g
+        transform="translate(0, 85)"
+        font-family="'Inter', sans-serif"
+        font-size="14"
+        fill="#CBD5E1"
+        font-weight="400">
+
+
+        <!-- LOCATION -->
+
         <g transform="translate(0, 0)">
-          <text font-weight="700" fill="#00F0FF">► 📍 Location:</text>
-          <text x="120" fill="#F8FAFC">India</text>
+
+          <text
+            font-weight="700"
+            fill="#00F0FF">
+
+            ► 📍 Location:
+
+          </text>
+
+          <text
+            x="120"
+            fill="#F8FAFC">
+
+            India
+
+          </text>
+
         </g>
+
+
+        <!-- EDUCATION -->
+
         <g transform="translate(0, 26)">
-          <text font-weight="700" fill="#FF007F">► 🎓 Education:</text>
-          <text x="120" fill="#F8FAFC">Electronics &amp; Communication Engineering</text>
+
+          <text
+            font-weight="700"
+            fill="#FF007F">
+
+            ► 🎓 Education:
+
+          </text>
+
+          <text
+            x="120"
+            fill="#F8FAFC">
+
+            Electronics &amp; Communication Engineering
+
+          </text>
+
         </g>
+
+
+        <!-- FOCUS -->
+
         <g transform="translate(0, 52)">
-          <text font-weight="700" fill="#F59E0B">► ⚡ Focus:</text>
-          <text x="120" fill="#F8FAFC">Hardware-Software Co-Design • Java • Vision AI</text>
+
+          <text
+            font-weight="700"
+            fill="#F59E0B">
+
+            ► ⚡ Focus:
+
+          </text>
+
+          <text
+            x="120"
+            fill="#F8FAFC">
+
+            Hardware-Software Co-Design • Java • Vision AI
+
+          </text>
+
         </g>
+
+
+        <!-- GITHUB -->
+
         <g transform="translate(0, 78)">
-          <text font-weight="700" fill="#00F0FF">► 🌐 GitHub:</text>
-          <text x="120" fill="#00F0FF" font-family="'Fira Code', monospace">github.com/Shreevishnu-senthilkumar</text>
+
+          <text
+            font-weight="700"
+            fill="#00F0FF">
+
+            ► 🌐 GitHub:
+
+          </text>
+
+          <text
+            x="120"
+            fill="#00F0FF"
+            font-family="'Fira Code', monospace">
+
+            github.com/Shreevishnu-senthilkumar
+
+          </text>
+
         </g>
+
+
+        <!-- EMAIL -->
+
         <g transform="translate(0, 104)">
-          <text font-weight="700" fill="#FF007F">► ✉️ Email:</text>
-          <text x="120" fill="#00F0FF" font-family="'Fira Code', monospace">vishnusenthil2007@gmail.com</text>
+
+          <text
+            font-weight="700"
+            fill="#FF007F">
+
+            ► ✉️ Email:
+
+          </text>
+
+          <text
+            x="120"
+            fill="#00F0FF"
+            font-family="'Fira Code', monospace">
+
+            vishnusenthil2007@gmail.com
+
+          </text>
+
         </g>
+
       </g>
 
-      <!-- Skills Header -->
+
+      <!-- =================================================
+           TECH STACK
+           ================================================= -->
+
       <g transform="translate(0, 235)">
-        <text font-family="'Inter', sans-serif" font-size="15" font-weight="800" fill="#F8FAFC" letter-spacing="1">
+
+        <text
+          font-family="'Inter', sans-serif"
+          font-size="15"
+          font-weight="800"
+          fill="#F8FAFC"
+          letter-spacing="1">
+
           TECH STACK &amp; CORE COMPETENCIES
-        </text>
-        <line x1="0" y1="12" x2="585" y2="12" stroke="rgba(255, 0, 127, 0.3)" stroke-width="1" />
 
-        <!-- Retro Neon Pills Grid -->
+        </text>
+
+
+        <line
+          x1="0"
+          y1="12"
+          x2="585"
+          y2="12"
+          stroke="rgba(255, 0, 127, 0.3)"
+          stroke-width="1" />
+
+
         <g transform="translate(0, 28)">
-          <!-- Row 1 -->
-          <g class="retro-pill" transform="translate(0, 0)">
-            <rect width="74" height="28" rx="14" fill="#080812" stroke="#ED8B00" stroke-width="1.5" />
-            <circle cx="15" cy="14" r="4" fill="#ED8B00" />
-            <text x="43" y="18" font-family="'Inter', sans-serif" font-size="12" fill="#F8FAFC" font-weight="700" text-anchor="middle">Java</text>
+
+
+          <!-- JAVA -->
+
+          <g
+            class="retro-pill"
+            transform="translate(0, 0)">
+
+            <rect
+              width="74"
+              height="28"
+              rx="14"
+              fill="#080812"
+              stroke="#ED8B00"
+              stroke-width="1.5" />
+
+            <circle
+              cx="15"
+              cy="14"
+              r="4"
+              fill="#ED8B00" />
+
+            <text
+              x="43"
+              y="18"
+              font-family="'Inter', sans-serif"
+              font-size="12"
+              fill="#F8FAFC"
+              font-weight="700"
+              text-anchor="middle">
+
+              Java
+
+            </text>
+
           </g>
 
-          <g class="retro-pill" transform="translate(82, 0)">
-            <rect width="86" height="28" rx="14" fill="#080812" stroke="#3776AB" stroke-width="1.5" />
-            <circle cx="15" cy="14" r="4" fill="#3776AB" />
-            <text x="49" y="18" font-family="'Inter', sans-serif" font-size="12" fill="#F8FAFC" font-weight="700" text-anchor="middle">Python</text>
+
+          <!-- PYTHON -->
+
+          <g
+            class="retro-pill"
+            transform="translate(82, 0)">
+
+            <rect
+              width="86"
+              height="28"
+              rx="14"
+              fill="#080812"
+              stroke="#3776AB"
+              stroke-width="1.5" />
+
+            <circle
+              cx="15"
+              cy="14"
+              r="4"
+              fill="#3776AB" />
+
+            <text
+              x="49"
+              y="18"
+              font-family="'Inter', sans-serif"
+              font-size="12"
+              fill="#F8FAFC"
+              font-weight="700"
+              text-anchor="middle">
+
+              Python
+
+            </text>
+
           </g>
 
-          <g class="retro-pill" transform="translate(176, 0)">
-            <rect width="78" height="28" rx="14" fill="#080812" stroke="#00599C" stroke-width="1.5" />
-            <circle cx="15" cy="14" r="4" fill="#00599C" />
-            <text x="45" y="18" font-family="'Inter', sans-serif" font-size="12" fill="#F8FAFC" font-weight="700" text-anchor="middle">C/C++</text>
+
+          <!-- C/C++ -->
+
+          <g
+            class="retro-pill"
+            transform="translate(176, 0)">
+
+            <rect
+              width="78"
+              height="28"
+              rx="14"
+              fill="#080812"
+              stroke="#00599C"
+              stroke-width="1.5" />
+
+            <circle
+              cx="15"
+              cy="14"
+              r="4"
+              fill="#00599C" />
+
+            <text
+              x="45"
+              y="18"
+              font-family="'Inter', sans-serif"
+              font-size="12"
+              fill="#F8FAFC"
+              font-weight="700"
+              text-anchor="middle">
+
+              C/C++
+
+            </text>
+
           </g>
 
-          <g class="retro-pill" transform="translate(262, 0)">
-            <rect width="80" height="28" rx="14" fill="#080812" stroke="#FF007F" stroke-width="1.5" />
-            <circle cx="15" cy="14" r="4" fill="#FF007F" />
-            <text x="46" y="18" font-family="'Inter', sans-serif" font-size="12" fill="#F8FAFC" font-weight="700" text-anchor="middle">ESP32</text>
+
+          <!-- ESP32 -->
+
+          <g
+            class="retro-pill"
+            transform="translate(262, 0)">
+
+            <rect
+              width="80"
+              height="28"
+              rx="14"
+              fill="#080812"
+              stroke="#FF007F"
+              stroke-width="1.5" />
+
+            <circle
+              cx="15"
+              cy="14"
+              r="4"
+              fill="#FF007F" />
+
+            <text
+              x="46"
+              y="18"
+              font-family="'Inter', sans-serif"
+              font-size="12"
+              fill="#F8FAFC"
+              font-weight="700"
+              text-anchor="middle">
+
+              ESP32
+
+            </text>
+
           </g>
 
-          <g class="retro-pill" transform="translate(350, 0)">
-            <rect width="82" height="28" rx="14" fill="#080812" stroke="#00F0FF" stroke-width="1.5" />
-            <circle cx="15" cy="14" r="4" fill="#00F0FF" />
-            <text x="47" y="18" font-family="'Inter', sans-serif" font-size="12" fill="#F8FAFC" font-weight="700" text-anchor="middle">STM32</text>
+
+          <!-- STM32 -->
+
+          <g
+            class="retro-pill"
+            transform="translate(350, 0)">
+
+            <rect
+              width="82"
+              height="28"
+              rx="14"
+              fill="#080812"
+              stroke="#00F0FF"
+              stroke-width="1.5" />
+
+            <circle
+              cx="15"
+              cy="14"
+              r="4"
+              fill="#00F0FF" />
+
+            <text
+              x="47"
+              y="18"
+              font-family="'Inter', sans-serif"
+              font-size="12"
+              fill="#F8FAFC"
+              font-weight="700"
+              text-anchor="middle">
+
+              STM32
+
+            </text>
+
           </g>
 
-          <g class="retro-pill" transform="translate(440, 0)">
-            <rect width="76" height="28" rx="14" fill="#080812" stroke="#A855F7" stroke-width="1.5" />
-            <circle cx="15" cy="14" r="4" fill="#A855F7" />
-            <text x="44" y="18" font-family="'Inter', sans-serif" font-size="12" fill="#F8FAFC" font-weight="700" text-anchor="middle">MQTT</text>
+
+          <!-- MQTT -->
+
+          <g
+            class="retro-pill"
+            transform="translate(440, 0)">
+
+            <rect
+              width="76"
+              height="28"
+              rx="14"
+              fill="#080812"
+              stroke="#A855F7"
+              stroke-width="1.5" />
+
+            <circle
+              cx="15"
+              cy="14"
+              r="4"
+              fill="#A855F7" />
+
+            <text
+              x="44"
+              y="18"
+              font-family="'Inter', sans-serif"
+              font-size="12"
+              fill="#F8FAFC"
+              font-weight="700"
+              text-anchor="middle">
+
+              MQTT
+
+            </text>
+
           </g>
 
-          <g class="retro-pill" transform="translate(524, 0)">
-            <rect width="72" height="28" rx="14" fill="#080812" stroke="#F59E0B" stroke-width="1.5" />
-            <circle cx="15" cy="14" r="4" fill="#F59E0B" />
-            <text x="42" y="18" font-family="'Inter', sans-serif" font-size="12" fill="#F8FAFC" font-weight="700" text-anchor="middle">Modbus</text>
+
+          <!-- MODBUS -->
+
+          <g
+            class="retro-pill"
+            transform="translate(524, 0)">
+
+            <rect
+              width="72"
+              height="28"
+              rx="14"
+              fill="#080812"
+              stroke="#F59E0B"
+              stroke-width="1.5" />
+
+            <circle
+              cx="15"
+              cy="14"
+              r="4"
+              fill="#F59E0B" />
+
+            <text
+              x="42"
+              y="18"
+              font-family="'Inter', sans-serif"
+              font-size="12"
+              fill="#F8FAFC"
+              font-weight="700"
+              text-anchor="middle">
+
+              Modbus
+
+            </text>
+
           </g>
 
-          <!-- Row 2 -->
-          <g class="retro-pill" transform="translate(0, 36)">
-            <rect width="88" height="28" rx="14" fill="#080812" stroke="#5C3EE8" stroke-width="1.5" />
-            <circle cx="15" cy="14" r="4" fill="#5C3EE8" />
-            <text x="50" y="18" font-family="'Inter', sans-serif" font-size="12" fill="#F8FAFC" font-weight="700" text-anchor="middle">OpenCV</text>
+
+          <!-- OPENCV -->
+
+          <g
+            class="retro-pill"
+            transform="translate(0, 36)">
+
+            <rect
+              width="88"
+              height="28"
+              rx="14"
+              fill="#080812"
+              stroke="#5C3EE8"
+              stroke-width="1.5" />
+
+            <circle
+              cx="15"
+              cy="14"
+              r="4"
+              fill="#5C3EE8" />
+
+            <text
+              x="50"
+              y="18"
+              font-family="'Inter', sans-serif"
+              font-size="12"
+              fill="#F8FAFC"
+              font-weight="700"
+              text-anchor="middle">
+
+              OpenCV
+
+            </text>
+
           </g>
 
-          <g class="retro-pill" transform="translate(96, 36)">
-            <rect width="110" height="28" rx="14" fill="#080812" stroke="#6DB33F" stroke-width="1.5" />
-            <circle cx="15" cy="14" r="4" fill="#6DB33F" />
-            <text x="61" y="18" font-family="'Inter', sans-serif" font-size="12" fill="#F8FAFC" font-weight="700" text-anchor="middle">Spring Boot</text>
+
+          <!-- SPRING BOOT -->
+
+          <g
+            class="retro-pill"
+            transform="translate(96, 36)">
+
+            <rect
+              width="110"
+              height="28"
+              rx="14"
+              fill="#080812"
+              stroke="#6DB33F"
+              stroke-width="1.5" />
+
+            <circle
+              cx="15"
+              cy="14"
+              r="4"
+              fill="#6DB33F" />
+
+            <text
+              x="61"
+              y="18"
+              font-family="'Inter', sans-serif"
+              font-size="12"
+              fill="#F8FAFC"
+              font-weight="700"
+              text-anchor="middle">
+
+              Spring Boot
+
+            </text>
+
           </g>
 
-          <g class="retro-pill" transform="translate(214, 36)">
-            <rect width="76" height="28" rx="14" fill="#080812" stroke="#FCC624" stroke-width="1.5" />
-            <circle cx="15" cy="14" r="4" fill="#FCC624" />
-            <text x="44" y="18" font-family="'Inter', sans-serif" font-size="12" fill="#F8FAFC" font-weight="700" text-anchor="middle">Linux</text>
+
+          <!-- LINUX -->
+
+          <g
+            class="retro-pill"
+            transform="translate(214, 36)">
+
+            <rect
+              width="76"
+              height="28"
+              rx="14"
+              fill="#080812"
+              stroke="#FCC624"
+              stroke-width="1.5" />
+
+            <circle
+              cx="15"
+              cy="14"
+              r="4"
+              fill="#FCC624" />
+
+            <text
+              x="44"
+              y="18"
+              font-family="'Inter', sans-serif"
+              font-size="12"
+              fill="#F8FAFC"
+              font-weight="700"
+              text-anchor="middle">
+
+              Linux
+
+            </text>
+
           </g>
 
-          <g class="retro-pill" transform="translate(298, 36)">
-            <rect width="66" height="28" rx="14" fill="#080812" stroke="#F05032" stroke-width="1.5" />
-            <circle cx="15" cy="14" r="4" fill="#F05032" />
-            <text x="39" y="18" font-family="'Inter', sans-serif" font-size="12" fill="#F8FAFC" font-weight="700" text-anchor="middle">Git</text>
+
+          <!-- GIT -->
+
+          <g
+            class="retro-pill"
+            transform="translate(298, 36)">
+
+            <rect
+              width="66"
+              height="28"
+              rx="14"
+              fill="#080812"
+              stroke="#F05032"
+              stroke-width="1.5" />
+
+            <circle
+              cx="15"
+              cy="14"
+              r="4"
+              fill="#F05032" />
+
+            <text
+              x="39"
+              y="18"
+              font-family="'Inter', sans-serif"
+              font-size="12"
+              fill="#F8FAFC"
+              font-weight="700"
+              text-anchor="middle">
+
+              Git
+
+            </text>
+
           </g>
 
-          <g class="retro-pill" transform="translate(372, 36)">
-            <rect width="126" height="28" rx="14" fill="#080812" stroke="#A855F7" stroke-width="1.5" />
-            <circle cx="15" cy="14" r="4" fill="#A855F7" />
-            <text x="69" y="18" font-family="'Inter', sans-serif" font-size="12" fill="#F8FAFC" font-weight="700" text-anchor="middle">System Design</text>
+
+          <!-- YOLO/CLIP -->
+
+          <g
+            class="retro-pill"
+            transform="translate(372, 36)">
+
+            <rect
+              width="90"
+              height="28"
+              rx="14"
+              fill="#080812"
+              stroke="#00F0FF"
+              stroke-width="1.5" />
+
+            <circle
+              cx="15"
+              cy="14"
+              r="4"
+              fill="#00F0FF" />
+
+            <text
+              x="51"
+              y="18"
+              font-family="'Inter', sans-serif"
+              font-size="12"
+              fill="#F8FAFC"
+              font-weight="700"
+              text-anchor="middle">
+
+              YOLO/CLIP
+
+            </text>
+
           </g>
 
-          <g class="retro-pill" transform="translate(506, 36)">
-            <rect width="90" height="28" rx="14" fill="#080812" stroke="#00F0FF" stroke-width="1.5" />
-            <circle cx="15" cy="14" r="4" fill="#00F0FF" />
-            <text x="51" y="18" font-family="'Inter', sans-serif" font-size="12" fill="#F8FAFC" font-weight="700" text-anchor="middle">YOLO/CLIP</text>
-          </g>
         </g>
+
       </g>
 
-      <!-- Professional Engineering Quote Section -->
+
+      <!-- =================================================
+           QUOTE
+           ================================================= -->
+
       <g transform="translate(0, 360)">
-        <line x1="0" y1="0" x2="585" y2="0" stroke="rgba(0, 240, 255, 0.2)" stroke-width="1" />
-        <text x="292.5" y="38" font-family="'Fira Code', 'Inter', monospace" font-size="14.5" font-weight="700" fill="#00F0FF" text-anchor="middle" letter-spacing="0.3">
+
+        <line
+          x1="0"
+          y1="0"
+          x2="585"
+          y2="0"
+          stroke="rgba(0, 240, 255, 0.2)"
+          stroke-width="1" />
+
+
+        <text
+          x="292.5"
+          y="38"
+          font-family="'Fira Code', 'Inter', monospace"
+          font-size="14.5"
+          font-weight="700"
+          fill="#00F0FF"
+          text-anchor="middle"
+          letter-spacing="0.3">
+
           "Engineering resilient software at the intersection of hardware, data, and AI."
+
         </text>
+
       </g>
+
     </g>
+
   </g>
+
 </svg>
