@@ -26,7 +26,7 @@ HEIGHT = ROWS * STEP + 30
 
 # 🐍 SLOW SNAKE
 # Increase this number = slower
-SNAKE_DURATION = 35
+SNAKE_DURATION = 120
 
 
 # ============================================================
@@ -276,7 +276,7 @@ def create_body():
     for i in range(segments):
 
         # Small delay = body follows head
-        delay = i * 0.07
+        delay = i * 0.35
 
         radius = 7.2 - (
             i * 0.09
