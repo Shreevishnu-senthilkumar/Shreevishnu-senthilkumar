@@ -31,14 +31,22 @@ HEIGHT = ROWS * STEP + 32
 
 
 # ============================================================
-# SPEED
+# ANIMATION SETTINGS
 # ============================================================
 
-# Complete snake journey
-SNAKE_DURATION = 18
+# Complete journey across the contribution grid
+# 30 seconds = normal/slightly slow
+SNAKE_DURATION = 30
 
-# Eating explosion
+# Very short eating effect
 BURST_DURATION = 0.18
+
+# Number of monster body segments
+BODY_SEGMENTS = 22
+
+# Distance between body segments
+# Smaller = tighter snake
+BODY_SPACING = 0.030
 
 
 # ============================================================
@@ -48,13 +56,13 @@ BURST_DURATION = 0.18
 BACKGROUND = "#070b14"
 EMPTY = "#111827"
 
-BLUE = "#3949ff"
-PURPLE = "#7c3aed"
-PINK = "#ec168c"
+BLUE = "#3155ff"
+PURPLE = "#743cff"
+PINK = "#ff168c"
 RED = "#ff1744"
 
 WHITE = "#ffffff"
-BLACK = "#050008"
+BLACK = "#030006"
 
 
 # ============================================================
@@ -120,21 +128,20 @@ calendar = (
 weeks = calendar["weeks"]
 
 
-print("========================================")
-print("     MONSTER CONTRIBUTION SNAKE")
-print("========================================")
-print("Username:", USERNAME)
-print(
-    "Total Contributions:",
-    calendar["totalContributions"]
-)
-print("Snake cycle:", SNAKE_DURATION, "seconds")
-print("Burst:", BURST_DURATION, "seconds")
-print("========================================")
+print("==========================================")
+print("       MONSTER CONTRIBUTION SNAKE")
+print("==========================================")
+print("Username       :", USERNAME)
+print("Contributions  :", calendar["totalContributions"])
+print("Snake duration :", SNAKE_DURATION, "seconds")
+print("Body segments  :", BODY_SEGMENTS)
+print("Body spacing   :", BODY_SPACING)
+print("Burst duration :", BURST_DURATION)
+print("==========================================")
 
 
 # ============================================================
-# CREATE CONTRIBUTION GRID
+# BUILD CONTRIBUTION GRID
 # ============================================================
 
 grid = []
@@ -172,7 +179,7 @@ for x in range(COLUMNS):
 
 
 # ============================================================
-# CONTRIBUTION COLORS
+# CONTRIBUTION COLOR
 # ============================================================
 
 def contribution_color(count):
@@ -193,7 +200,7 @@ def contribution_color(count):
 
 
 # ============================================================
-# SNAKE PATH
+# CREATE SNAKE PATH
 # ============================================================
 
 def create_path():
@@ -209,6 +216,11 @@ def create_path():
             + 8
         )
 
+
+        # Left → right
+        # Right → left
+        # Left → right
+        # etc.
 
         if y % 2 == 0:
 
@@ -263,11 +275,11 @@ def create_grid():
     output = []
 
 
-    total_points = len(POINTS)
+    total_cells = len(POINTS)
 
     time_per_cell = (
         SNAKE_DURATION /
-        total_points
+        total_cells
     )
 
 
@@ -281,9 +293,9 @@ def create_grid():
             py = y * STEP + 8
 
 
-            # -----------------------------------------------
-            # EMPTY CONTRIBUTION
-            # -----------------------------------------------
+            # =================================================
+            # EMPTY CELL
+            # =================================================
 
             if item["count"] == 0:
 
@@ -303,49 +315,51 @@ def create_grid():
                 continue
 
 
-            # -----------------------------------------------
-            # FIND CELL POSITION ON SNAKE PATH
-            # -----------------------------------------------
+            # =================================================
+            # FIND POSITION ON SNAKE PATH
+            # =================================================
 
             if y % 2 == 0:
 
-                point_index = (
+                path_index = (
                     y * COLUMNS + x
                 )
 
             else:
 
-                point_index = (
+                path_index = (
                     y * COLUMNS
                     + (COLUMNS - 1 - x)
                 )
 
 
             eat_time = (
-                point_index *
+                path_index *
                 time_per_cell
             )
 
 
-            disappear_time = (
+            burst_end = (
                 eat_time +
                 BURST_DURATION
             )
 
 
-            # -----------------------------------------------
-            # CONTRIBUTION CELL
-            #
-            # Visible
-            # ↓
-            # Snake arrives
-            # ↓
-            # Burst
-            # ↓
-            # Disappear
-            # ↓
-            # Next cycle appears again
-            # -----------------------------------------------
+            # Keep values safely inside SVG timeline
+
+            eat_key = min(
+                eat_time /
+                SNAKE_DURATION,
+                0.998
+            )
+
+
+            burst_key = min(
+                burst_end /
+                SNAKE_DURATION,
+                0.999
+            )
+
 
             color = contribution_color(
                 item["count"]
@@ -359,12 +373,26 @@ def create_grid():
                 title = (
                     f'''
                     <title>
-                        {item["date"]}:
-                        {item["count"]} contributions
+                    {item["date"]}:
+                    {item["count"]} contributions
                     </title>
                     '''
                 )
 
+
+            # =================================================
+            # CONTRIBUTION CELL
+            #
+            # 100% visible
+            #      ↓
+            # snake arrives
+            #      ↓
+            # quick flash
+            #      ↓
+            # disappears
+            #      ↓
+            # next cycle = visible again
+            # =================================================
 
             output.append(
                 f'''
@@ -381,20 +409,25 @@ def create_grid():
 
                     <animate
                         attributeName="opacity"
+
                         values="
                             1;
                             1;
+                            0.35;
                             0;
                             0;
                             1
                         "
+
                         keyTimes="
                             0;
-                            {eat_time / SNAKE_DURATION:.6f};
-                            {disappear_time / SNAKE_DURATION:.6f};
-                            0.9999;
+                            {eat_key:.6f};
+                            {eat_key + 0.002:.6f};
+                            {burst_key:.6f};
+                            0.999;
                             1
                         "
+
                         dur="{SNAKE_DURATION}s"
                         repeatCount="indefinite"
                     />
@@ -408,77 +441,7 @@ def create_grid():
 
 
 # ============================================================
-# SNAKE BODY
-# ============================================================
-
-def create_body():
-
-    output = []
-
-    segments = 18
-
-
-    for i in range(segments):
-
-        delay = i * 0.035
-
-
-        radius = (
-            7.5 -
-            i * 0.12
-        )
-
-
-        if radius < 5.5:
-            radius = 5.5
-
-
-        # -----------------------------------------------
-        # BODY COLOR
-        # -----------------------------------------------
-
-        if i < 5:
-
-            color = BLUE
-
-        elif i < 10:
-
-            color = PURPLE
-
-        else:
-
-            color = PINK
-
-
-        output.append(
-            f'''
-            <circle
-                cx="0"
-                cy="0"
-                r="{radius:.2f}"
-                fill="{color}"
-                opacity="0.96"
-            >
-
-                <animateMotion
-                    dur="{SNAKE_DURATION}s"
-                    begin="{delay:.2f}s"
-                    repeatCount="indefinite"
-                    calcMode="linear"
-                    rotate="auto"
-                    path="{PATH}"
-                />
-
-            </circle>
-            '''
-        )
-
-
-    return "\n".join(output)
-
-
-# ============================================================
-# QUICK EATING BURSTS
+# QUICK BURST
 # ============================================================
 
 def create_bursts():
@@ -486,25 +449,28 @@ def create_bursts():
     output = []
 
 
-    total_points = len(POINTS)
+    total_cells = len(POINTS)
 
     time_per_cell = (
         SNAKE_DURATION /
-        total_points
+        total_cells
     )
 
 
     for index, (cx, cy) in enumerate(POINTS):
 
-        x = int(
-            (cx - CELL / 2) /
-            STEP
-        )
+        x = index % COLUMNS
 
-        y = int(
-            (cy - 8 - CELL / 2) /
-            STEP
-        )
+        y = index // COLUMNS
+
+
+        if y % 2 == 1:
+
+            x = (
+                COLUMNS -
+                1 -
+                x
+            )
 
 
         if x < 0 or x >= COLUMNS:
@@ -514,7 +480,8 @@ def create_bursts():
             continue
 
 
-        # Only burst on actual contributions
+        # Only contributions create a burst
+
         if grid[x][y]["count"] <= 0:
             continue
 
@@ -526,7 +493,7 @@ def create_bursts():
 
 
         # ====================================================
-        # SMALL WHITE FLASH
+        # WHITE FLASH
         # ====================================================
 
         output.append(
@@ -541,9 +508,9 @@ def create_bursts():
 
                 <animate
                     attributeName="r"
-                    values="1;7;1"
+                    values="1;5;1"
                     dur="{BURST_DURATION}s"
-                    begin="{eat_time:.4f}s"
+                    begin="{eat_time:.5f}s"
                     repeatCount="indefinite"
                 />
 
@@ -551,17 +518,16 @@ def create_bursts():
                     attributeName="opacity"
                     values="0;1;0"
                     dur="{BURST_DURATION}s"
-                    begin="{eat_time:.4f}s"
+                    begin="{eat_time:.5f}s"
                     repeatCount="indefinite"
                 />
 
             </circle>
-            '''
-        )
+            ''')
 
 
         # ====================================================
-        # QUICK PINK RING
+        # PINK BURST RING
         # ====================================================
 
         output.append(
@@ -572,15 +538,15 @@ def create_bursts():
                 r="1"
                 fill="none"
                 stroke="{PINK}"
-                stroke-width="2"
+                stroke-width="1.5"
                 opacity="0"
             >
 
                 <animate
                     attributeName="r"
-                    values="1;10"
+                    values="1;8"
                     dur="{BURST_DURATION}s"
-                    begin="{eat_time:.4f}s"
+                    begin="{eat_time:.5f}s"
                     repeatCount="indefinite"
                 />
 
@@ -588,13 +554,99 @@ def create_bursts():
                     attributeName="opacity"
                     values="0;0.9;0"
                     dur="{BURST_DURATION}s"
-                    begin="{eat_time:.4f}s"
+                    begin="{eat_time:.5f}s"
                     repeatCount="indefinite"
                 />
 
             </circle>
-            '''
+            ''')
+
+
+    return "\n".join(output)
+
+
+# ============================================================
+# MONSTER BODY
+# ============================================================
+
+def create_body():
+
+    output = []
+
+
+    for i in range(BODY_SEGMENTS):
+
+        # Very small delay = connected body
+        delay = (
+            i *
+            BODY_SPACING
         )
+
+
+        # Body gets slightly smaller toward tail
+
+        radius = (
+            7.4 -
+            i * 0.08
+        )
+
+
+        if radius < 5.7:
+            radius = 5.7
+
+
+        # ====================================================
+        # BODY COLOR
+        # ====================================================
+
+        if i < 7:
+
+            color = BLUE
+
+        elif i < 14:
+
+            color = PURPLE
+
+        else:
+
+            color = PINK
+
+
+        # ====================================================
+        # NEGATIVE BEGIN
+        #
+        # This is important.
+        #
+        # It prevents the body from appearing later than
+        # the head and removes the visible gap.
+        # ====================================================
+
+        output.append(
+            f'''
+            <circle
+                cx="0"
+                cy="0"
+                r="{radius:.2f}"
+                fill="{color}"
+                opacity="0.97"
+            >
+
+                <animateMotion
+                    dur="{SNAKE_DURATION}s"
+
+                    begin="-{delay:.4f}s"
+
+                    repeatCount="indefinite"
+
+                    calcMode="linear"
+
+                    rotate="auto"
+
+                    path="{PATH}"
+                />
+
+            </circle>
+            ''')
 
 
     return "\n".join(output)
@@ -610,14 +662,16 @@ def create_head():
     <g>
 
 
-        <!-- HEAD GLOW -->
+        <!-- ================================================
+             HEAD GLOW
+             ================================================ -->
 
         <circle
             cx="0"
             cy="0"
-            r="17"
+            r="16"
             fill="{RED}"
-            opacity="0.14"
+            opacity="0.12"
         >
 
             <animateMotion
@@ -631,66 +685,76 @@ def create_head():
         </circle>
 
 
-        <!-- MAIN HEAD -->
+        <!-- ================================================
+             HEAD
+             ================================================ -->
 
         <circle
             cx="0"
             cy="0"
-            r="11"
+            r="10.5"
             fill="{RED}"
             stroke="{BLACK}"
             stroke-width="2"
         />
 
 
-        <!-- FACE -->
+        <!-- ================================================
+             FACE
+             ================================================ -->
 
         <ellipse
             cx="0"
             cy="1"
-            rx="8.5"
-            ry="8"
+            rx="8"
+            ry="7.5"
             fill="{BLACK}"
         />
 
 
-        <!-- LEFT EYE -->
+        <!-- ================================================
+             LEFT EYE
+             ================================================ -->
 
         <ellipse
-            cx="-3.7"
+            cx="-3.5"
             cy="-3"
-            rx="2.5"
-            ry="2.8"
+            rx="2.3"
+            ry="2.7"
             fill="{WHITE}"
         />
 
         <circle
-            cx="-3.7"
+            cx="-3.5"
             cy="-2.7"
-            r="1.3"
+            r="1.2"
             fill="{RED}"
         />
 
 
-        <!-- RIGHT EYE -->
+        <!-- ================================================
+             RIGHT EYE
+             ================================================ -->
 
         <ellipse
-            cx="3.7"
+            cx="3.5"
             cy="-3"
-            rx="2.5"
-            ry="2.8"
+            rx="2.3"
+            ry="2.7"
             fill="{WHITE}"
         />
 
         <circle
-            cx="3.7"
+            cx="3.5"
             cy="-2.7"
-            r="1.3"
+            r="1.2"
             fill="{RED}"
         />
 
 
-        <!-- EYEBROWS -->
+        <!-- ================================================
+             EYEBROWS
+             ================================================ -->
 
         <path
             d="M -7 -6 L -2 -5"
@@ -707,35 +771,41 @@ def create_head():
         />
 
 
-        <!-- MOUTH -->
+        <!-- ================================================
+             MOUTH
+             ================================================ -->
 
         <path
             d="
                 M -7 2
-                Q 0 11 7 2
+                Q 0 10 7 2
                 Q 0 6 -7 2
             "
-            fill="#150006"
+            fill="#120005"
         />
 
 
-        <!-- TEETH -->
+        <!-- ================================================
+             TEETH
+             ================================================ -->
 
         <path
             d="
                 M -5 3
-                L -3.3 7
-                L -1.6 3
+                L -3.2 7
+                L -1.5 3
 
-                M 1.6 3
-                L 3.3 7
+                M 1.5 3
+                L 3.2 7
                 L 5 3
             "
             fill="{WHITE}"
         />
 
 
-        <!-- HORNS -->
+        <!-- ================================================
+             HORNS
+             ================================================ -->
 
         <path
             d="
@@ -747,6 +817,7 @@ def create_head():
             stroke="{BLACK}"
             stroke-width="1"
         />
+
 
         <path
             d="
@@ -760,7 +831,9 @@ def create_head():
         />
 
 
-        <!-- HEAD MOVEMENT -->
+        <!-- ================================================
+             HEAD MOVEMENT
+             ================================================ -->
 
         <animateMotion
             dur="{SNAKE_DURATION}s"
@@ -784,12 +857,20 @@ def create_svg():
 
 <svg
     xmlns="http://www.w3.org/2000/svg"
+
     width="100%"
+
     viewBox="0 0 {WIDTH} {HEIGHT}"
+
     role="img"
+
     aria-label="Monster GitHub contribution snake"
 >
 
+
+    <!-- ====================================================
+         DEFINITIONS
+         ==================================================== -->
 
     <defs>
 
@@ -802,13 +883,14 @@ def create_svg():
         >
 
             <feGaussianBlur
-                stdDeviation="2.5"
+                stdDeviation="2"
                 result="blur"
             />
 
             <feMerge>
 
                 <feMergeNode in="blur"/>
+
                 <feMergeNode in="SourceGraphic"/>
 
             </feMerge>
@@ -818,9 +900,9 @@ def create_svg():
     </defs>
 
 
-    <!-- =====================================================
+    <!-- ====================================================
          BACKGROUND
-         ===================================================== -->
+         ==================================================== -->
 
     <rect
         x="0"
@@ -832,9 +914,9 @@ def create_svg():
     />
 
 
-    <!-- =====================================================
-         CONTRIBUTIONS
-         ===================================================== -->
+    <!-- ====================================================
+         CONTRIBUTION CELLS
+         ==================================================== -->
 
     <g id="contributions">
 
@@ -843,9 +925,9 @@ def create_svg():
     </g>
 
 
-    <!-- =====================================================
-         EATING EFFECT
-         ===================================================== -->
+    <!-- ====================================================
+         EATING BURSTS
+         ==================================================== -->
 
     <g
         id="bursts"
@@ -857,9 +939,9 @@ def create_svg():
     </g>
 
 
-    <!-- =====================================================
+    <!-- ====================================================
          MONSTER
-         ===================================================== -->
+         ==================================================== -->
 
     <g
         id="monster"
@@ -873,9 +955,9 @@ def create_svg():
     </g>
 
 
-    <!-- =====================================================
+    <!-- ====================================================
          LABEL
-         ===================================================== -->
+         ==================================================== -->
 
     <text
         x="10"
@@ -893,7 +975,7 @@ def create_svg():
 
 
 # ============================================================
-# WRITE OUTPUT
+# WRITE FILES
 # ============================================================
 
 svg = create_svg()
@@ -924,13 +1006,14 @@ dark_file.write_text(
 
 
 print()
-print("========================================")
-print("       MONSTER SNAKE READY")
-print("========================================")
-print("Cycle       :", SNAKE_DURATION, "seconds")
-print("Burst       :", BURST_DURATION, "seconds")
-print("Direction   : Forward")
-print("Reset       : Every cycle")
-print("Eating      : Enabled")
-print("Colors      : Blue / Purple / Pink / Red")
-print("========================================")
+print("==========================================")
+print("       MONSTER SNAKE GENERATED")
+print("==========================================")
+print("Cycle        :", SNAKE_DURATION, "seconds")
+print("Body         :", BODY_SEGMENTS, "segments")
+print("Spacing      :", BODY_SPACING)
+print("Burst        :", BURST_DURATION, "seconds")
+print("Eating       : ENABLED")
+print("Reset        : ENABLED")
+print("Direction    : FORWARD")
+print("==========================================")
