@@ -1,30 +1,26 @@
 <div align="center">
+  <img src="./dark.svg"
+       alt="Shreevishnu R S - Software &amp; Embedded Systems Engineer"
+       width="100%">
+</div>
+
+<br/>
+
+<div align="center">
 
   <a href="https://www.linkedin.com/in/shreevishnu-r-s-400728305/">
-    <img
-      src="https://img.shields.io/badge/LINKEDIN-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"
-      alt="LinkedIn"
-    />
+    <img src="https://img.shields.io/badge/LINKEDIN-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />
   </a>
 
   <a href="mailto:vishnusenthil2007@gmail.com">
-    <img
-      src="https://img.shields.io/badge/GMAIL-D14836?style=for-the-badge&logo=gmail&logoColor=white"
-      alt="Email"
-    />
+    <img src="https://img.shields.io/badge/GMAIL-D14836?style=for-the-badge&logo=gmail&logoColor=white" />
   </a>
 
   <a href="https://github.com/Shreevishnu-senthilkumar?tab=followers">
-    <img
-      src="https://img.shields.io/github/followers/Shreevishnu-senthilkumar?label=FOLLOWERS&style=for-the-badge&logo=github&logoColor=white&color=00D9FF"
-      alt="GitHub Followers"
-    />
+    <img src="https://img.shields.io/github/followers/Shreevishnu-senthilkumar?label=FOLLOWERS&style=for-the-badge&logo=github&logoColor=white&color=00D9FF" />
   </a>
 
-  <img
-    src="https://komarev.com/ghpvc/?username=Shreevishnu-senthilkumar&label=PROFILE%20VIEWS&style=for-the-badge&color=00D9FF&labelColor=252525"
-    alt="Profile Views"
-  />
+  <img src="https://komarev.com/ghpvc/?username=Shreevishnu-senthilkumar&label=PROFILE%20VIEWS&style=for-the-badge&color=00D9FF&labelColor=252525" />
 
 </div>
 
@@ -128,15 +124,21 @@ From engineering firmware on microcontrollers (ESP32/STM32) streaming industrial
 </table>
 
 ---
+---
 
 ## 📊 GitHub Analytics
 
 <div align="center">
-  <img src="https://streak-stats.demolab.com?user=Shreevishnu-senthilkumar&theme=tokyonight&hide_border=true" alt="GitHub Streak" />
+
+  <img
+    src="https://streak-stats.demolab.com?user=Shreevishnu-senthilkumar&theme=tokyonight&hide_border=true&background=0D1117&ring=00D9FF&fire=FF007F&currStreakLabel=00D9FF"
+    alt="GitHub Streak"
+    width="700"
+  />
+
 </div>
 
 <br/>
-
 
 ---
 
