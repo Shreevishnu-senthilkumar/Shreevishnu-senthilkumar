@@ -35,7 +35,7 @@ HEIGHT = ROWS * STEP + 32
 # ============================================================
 
 # Complete snake journey
-SNAKE_DURATION = 10
+SNAKE_DURATION = 18
 
 # Eating explosion
 BURST_DURATION = 0.18
@@ -415,12 +415,12 @@ def create_body():
 
     output = []
 
-    segments = 16
+    segments = 18
 
 
     for i in range(segments):
 
-        delay = i * 0.12
+        delay = i * 0.035
 
 
         radius = (
