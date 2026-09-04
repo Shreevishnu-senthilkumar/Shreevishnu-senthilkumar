@@ -1,4 +1,4 @@
-name: Monster Contribution Snake
+name: 🐍 Monster Contribution Snake
 
 on:
   schedule:
@@ -15,222 +15,24 @@ permissions:
 
 jobs:
   generate:
+    name: Generate Monster Snake
     runs-on: ubuntu-latest
-    timeout-minutes: 5
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      # --------------------------------------------------
-      # 1. Generate the normal GitHub contribution snake
-      # --------------------------------------------------
-      - name: Generate contribution snake
-        uses: Platane/snk@v3
-        with:
-          github_user_name: ${{ github.repository_owner }}
-          outputs: |
-            dist/github-contribution-grid-snake.svg?color_snake=#00ff66
-            dist/github-contribution-grid-snake-dark.svg?palette=github-dark&color_snake=#00ff66
-
-
-      # --------------------------------------------------
-      # 2. Create monster head
-      # --------------------------------------------------
-      - name: Add monster head
-        shell: python
+      - name: Generate monster snake
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_USERNAME: ${{ github.repository_owner }}
         run: |
-          import re
-          from pathlib import Path
+          python3 .github/monster_snake.py
 
-          files = [
-              "dist/github-contribution-grid-snake.svg",
-              "dist/github-contribution-grid-snake-dark.svg"
-          ]
-
-          for filename in files:
-
-              path = Path(filename)
-
-              if not path.exists():
-                  print(f"File not found: {filename}")
-                  continue
-
-              svg = path.read_text()
-
-              # Find animation duration
-              duration_match = re.search(
-                  r'animation:\s*none linear\s*([0-9.]+)ms infinite',
-                  svg
-              )
-
-              if duration_match:
-                  duration = duration_match.group(1)
-              else:
-                  duration = "10000"
-
-              # Try to determine cell size from SVG width.
-              viewbox = re.search(
-                  r'viewBox=["\']0\s+0\s+([0-9.]+)\s+([0-9.]+)["\']',
-                  svg
-              )
-
-              if viewbox:
-                  width = float(viewbox.group(1))
-                  cell = width / 53.0
-              else:
-                  cell = 14.0
-
-              center = cell / 2
-              head_size = cell * 1.65
-
-              # ------------------------------------------------
-              # Monster head
-              # The class uses the existing s0 animation.
-              # ------------------------------------------------
-
-              monster = f'''
-          <style>
-            .monster-head {{
-              animation: none linear {duration}ms infinite;
-              animation-name: s0;
-              transform-origin: {center}px {center}px;
-            }}
-
-            .monster-eye {{
-              animation: monsterBlink 3s infinite;
-              transform-origin: center;
-            }}
-
-            @keyframes monsterBlink {{
-              0%, 92%, 100% {{
-                transform: scaleY(1);
-              }}
-              95% {{
-                transform: scaleY(0.15);
-              }}
-            }}
-          </style>
-
-          <g class="monster-head">
-
-            <!-- Monster head -->
-            <circle
-              cx="{center}"
-              cy="{center}"
-              r="{head_size / 2:.2f}"
-              fill="#00ff66"
-              stroke="#071b12"
-              stroke-width="{cell * 0.12:.2f}"
-            />
-
-            <!-- Dark face -->
-            <circle
-              cx="{center}"
-              cy="{center + cell * 0.03:.2f}"
-              r="{head_size * 0.38:.2f}"
-              fill="#06140d"
-            />
-
-            <!-- Left eye -->
-            <g class="monster-eye">
-              <ellipse
-                cx="{center - cell * 0.20:.2f}"
-                cy="{center - cell * 0.17:.2f}"
-                rx="{cell * 0.10:.2f}"
-                ry="{cell * 0.14:.2f}"
-                fill="#ffffff"
-              />
-              <circle
-                cx="{center - cell * 0.20:.2f}"
-                cy="{center - cell * 0.14:.2f}"
-                r="{cell * 0.045:.2f}"
-                fill="#ff1744"
-              />
-            </g>
-
-            <!-- Right eye -->
-            <g class="monster-eye">
-              <ellipse
-                cx="{center + cell * 0.20:.2f}"
-                cy="{center - cell * 0.17:.2f}"
-                rx="{cell * 0.10:.2f}"
-                ry="{cell * 0.14:.2f}"
-                fill="#ffffff"
-              />
-              <circle
-                cx="{center + cell * 0.20:.2f}"
-                cy="{center - cell * 0.14:.2f}"
-                r="{cell * 0.045:.2f}"
-                fill="#ff1744"
-              />
-            </g>
-
-            <!-- Monster mouth -->
-            <path
-              d="
-                M {center - cell * 0.30:.2f} {center + cell * 0.13:.2f}
-                Q {center:.2f} {center + cell * 0.42:.2f}
-                  {center + cell * 0.30:.2f} {center + cell * 0.13:.2f}
-                Z
-              "
-              fill="#170008"
-              stroke="#071b12"
-              stroke-width="{cell * 0.04:.2f}"
-            />
-
-            <!-- Teeth -->
-            <path
-              d="
-                M {center - cell * 0.23:.2f} {center + cell * 0.19:.2f}
-                L {center - cell * 0.15:.2f} {center + cell * 0.33:.2f}
-                L {center - cell * 0.08:.2f} {center + cell * 0.20:.2f}
-
-                M {center + cell * 0.08:.2f} {center + cell * 0.20:.2f}
-                L {center + cell * 0.15:.2f} {center + cell * 0.33:.2f}
-                L {center + cell * 0.23:.2f} {center + cell * 0.19:.2f}
-              "
-              fill="#ffffff"
-              stroke="#ffffff"
-              stroke-width="{cell * 0.07:.2f}"
-              stroke-linejoin="round"
-            />
-
-            <!-- Tongue -->
-            <path
-              d="
-                M {center:.2f} {center + cell * 0.30:.2f}
-                C {center - cell * 0.10:.2f} {center + cell * 0.47:.2f},
-                  {center - cell * 0.16:.2f} {center + cell * 0.47:.2f},
-                  {center - cell * 0.20:.2f} {center + cell * 0.40:.2f}
-
-                M {center:.2f} {center + cell * 0.30:.2f}
-                C {center + cell * 0.10:.2f} {center + cell * 0.47:.2f},
-                  {center + cell * 0.16:.2f} {center + cell * 0.47:.2f},
-                  {center + cell * 0.20:.2f} {center + cell * 0.40:.2f}
-              "
-              fill="none"
-              stroke="#ff1744"
-              stroke-width="{cell * 0.07:.2f}"
-              stroke-linecap="round"
-            />
-
-          </g>
-          '''
-
-              # Insert monster before closing SVG tag
-              svg = svg.replace("</svg>", monster + "\n</svg>")
-
-              path.write_text(svg)
-
-              print(f"Monster added to {filename}")
-
-
-      # --------------------------------------------------
-      # 3. Publish generated files to output branch
-      # --------------------------------------------------
       - name: Publish monster snake
-        uses: crazy-max/ghaction-github-pages@v3.1.0
+        uses: crazy-max/ghaction-github-pages@v4
         with:
-          target_branch: output
           build_dir: dist
+          target_branch: output
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
