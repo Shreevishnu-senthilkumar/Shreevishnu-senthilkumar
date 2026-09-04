@@ -16,7 +16,7 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 # ============================================================
-# GRID
+# GRID SETTINGS
 # ============================================================
 
 ROWS = 7
@@ -34,24 +34,24 @@ HEIGHT = ROWS * STEP + 32
 # ANIMATION SETTINGS
 # ============================================================
 
-# Full snake journey across the contribution grid
-# 32 seconds = smooth / normal speed
+# Full journey across the contribution calendar
 SNAKE_DURATION = 32
 
-# Very quick eating burst
+# Very quick eating explosion
 BURST_DURATION = 0.18
 
-# Number of monster body segments
+# Number of body segments
 BODY_SEGMENTS = 22
 
-# Time gap between body segments
-# Positive value makes every segment FOLLOW the head.
+# Distance between body segments in contribution-cell units
 #
-# 0.06 seconds = tight body
-# 0.08 seconds = normal body
+# 0.50 = very tight
+# 0.65 = tight
+# 0.80 = normal
+# 1.00 = larger gaps
 #
-# We use 0.06 for a compact snake.
-BODY_SEGMENT_DELAY = 0.06
+# Use 0.65 so the snake remains long and connected.
+BODY_SPACING_CELLS = 0.65
 
 
 # ============================================================
@@ -71,7 +71,7 @@ BLACK = "#030006"
 
 
 # ============================================================
-# GITHUB API
+# GITHUB GRAPHQL QUERY
 # ============================================================
 
 QUERY = """
@@ -92,6 +92,10 @@ query($login: String!) {
 }
 """
 
+
+# ============================================================
+# GITHUB API REQUEST
+# ============================================================
 
 payload = json.dumps({
     "query": QUERY,
@@ -133,6 +137,11 @@ calendar = (
 weeks = calendar["weeks"]
 
 
+# ============================================================
+# LOG
+# ============================================================
+
+print()
 print("==========================================")
 print("       MONSTER CONTRIBUTION SNAKE")
 print("==========================================")
@@ -140,9 +149,10 @@ print("Username       :", USERNAME)
 print("Contributions  :", calendar["totalContributions"])
 print("Snake duration :", SNAKE_DURATION, "seconds")
 print("Body segments  :", BODY_SEGMENTS)
-print("Segment delay  :", BODY_SEGMENT_DELAY)
-print("Burst duration :", BURST_DURATION)
+print("Body spacing   :", BODY_SPACING_CELLS, "cells")
+print("Burst duration :", BURST_DURATION, "seconds")
 print("==========================================")
+print()
 
 
 # ============================================================
@@ -159,7 +169,9 @@ for x in range(COLUMNS):
     else:
         days = []
 
+
     column = []
+
 
     for y in range(ROWS):
 
@@ -176,6 +188,7 @@ for x in range(COLUMNS):
                 "count": 0,
                 "date": ""
             })
+
 
     grid.append(column)
 
@@ -202,12 +215,13 @@ def contribution_color(count):
 
 
 # ============================================================
-# CREATE SNAKE PATH
+# CREATE SERPENTINE PATH
 # ============================================================
 
 def create_path():
 
     points = []
+
 
     for y in range(ROWS):
 
@@ -217,17 +231,21 @@ def create_path():
             + 8
         )
 
-        # Even rows:
+
+        # ----------------------------------------------------
+        # EVEN ROW
         # LEFT → RIGHT
-        #
-        # Odd rows:
-        # RIGHT → LEFT
-        #
-        # This creates the serpentine path.
+        # ----------------------------------------------------
 
         if y % 2 == 0:
 
             xs = range(COLUMNS)
+
+
+        # ----------------------------------------------------
+        # ODD ROW
+        # RIGHT → LEFT
+        # ----------------------------------------------------
 
         else:
 
@@ -236,6 +254,7 @@ def create_path():
                 -1,
                 -1
             )
+
 
         for x in xs:
 
@@ -248,16 +267,23 @@ def create_path():
                 (px, py)
             )
 
+
+    # --------------------------------------------------------
+    # BUILD SVG PATH
+    # --------------------------------------------------------
+
     path = (
         f"M {points[0][0]} "
         f"{points[0][1]}"
     )
+
 
     for px, py in points[1:]:
 
         path += (
             f" L {px} {py}"
         )
+
 
     return path, points
 
@@ -266,19 +292,23 @@ PATH, POINTS = create_path()
 
 
 # ============================================================
-# CONTRIBUTION GRID
+# CONTRIBUTION GRID ANIMATION
 # ============================================================
 
 def create_grid():
 
     output = []
 
+
     total_cells = len(POINTS)
 
+
+    # Time required to move from one cell to the next
     time_per_cell = (
         SNAKE_DURATION /
         total_cells
     )
+
 
     for x in range(COLUMNS):
 
@@ -286,12 +316,13 @@ def create_grid():
 
             item = grid[x][y]
 
+
             px = x * STEP
             py = y * STEP + 8
 
 
             # =================================================
-            # EMPTY CELL
+            # EMPTY CONTRIBUTION
             # =================================================
 
             if item["count"] == 0:
@@ -313,7 +344,7 @@ def create_grid():
 
 
             # =================================================
-            # FIND POSITION ON SNAKE PATH
+            # FIND CELL POSITION ON SERPENTINE PATH
             # =================================================
 
             if y % 2 == 0:
@@ -335,14 +366,16 @@ def create_grid():
                 )
 
 
-            # Time when snake reaches cell
+            # =================================================
+            # WHEN MONSTER REACHES CELL
+            # =================================================
+
             eat_time = (
                 path_index *
                 time_per_cell
             )
 
 
-            # End of quick burst
             burst_end = (
                 eat_time
                 + BURST_DURATION
@@ -350,7 +383,7 @@ def create_grid():
 
 
             # =================================================
-            # SAFE SVG TIMELINE VALUES
+            # NORMALIZE TIMELINE
             # =================================================
 
             eat_key = min(
@@ -358,6 +391,7 @@ def create_grid():
                 SNAKE_DURATION,
                 0.998
             )
+
 
             burst_key = min(
                 burst_end /
@@ -372,38 +406,29 @@ def create_grid():
 
 
             # =================================================
-            # TOOLTIP
+            # DATE TOOLTIP
             # =================================================
 
             title = ""
 
+
             if item["date"]:
 
-                title = (
-                    f'''
-                    <title>
-                        {item["date"]}:
-                        {item["count"]}
-                        contributions
-                    </title>
-                    '''
-                )
+                title = f'''
+                <title>
+                    {item["date"]}: {item["count"]} contributions
+                </title>
+                '''
 
 
             # =================================================
             # CONTRIBUTION CELL
             #
-            # START:
-            #   visible
-            #
-            # SNAKE ARRIVES:
-            #   flash
-            #
-            # AFTER EATING:
-            #   disappear
-            #
-            # NEXT CYCLE:
-            #   appear again
+            # 1. Visible
+            # 2. Monster reaches it
+            # 3. Flash
+            # 4. Disappears
+            # 5. Next cycle = visible again
             # =================================================
 
             output.append(
@@ -453,14 +478,16 @@ def create_grid():
 
 
 # ============================================================
-# QUICK EATING BURSTS
+# CONTRIBUTION BURSTS
 # ============================================================
 
 def create_bursts():
 
     output = []
 
+
     total_cells = len(POINTS)
+
 
     time_per_cell = (
         SNAKE_DURATION /
@@ -470,10 +497,12 @@ def create_bursts():
 
     for index, (cx, cy) in enumerate(POINTS):
 
-        # Convert path index back to grid coordinates
+        # ----------------------------------------------------
+        # Convert path index → grid position
+        # ----------------------------------------------------
 
-        x = index % COLUMNS
         y = index // COLUMNS
+        x = index % COLUMNS
 
 
         if y % 2 == 1:
@@ -492,7 +521,9 @@ def create_bursts():
             continue
 
 
-        # Only contribution cells burst
+        # ----------------------------------------------------
+        # Only real contributions explode
+        # ----------------------------------------------------
 
         if grid[x][y]["count"] <= 0:
             continue
@@ -588,22 +619,60 @@ def create_body():
     output = []
 
 
+    # --------------------------------------------------------
+    # Time for one contribution cell
+    # --------------------------------------------------------
+
+    time_per_cell = (
+        SNAKE_DURATION /
+        len(POINTS)
+    )
+
+
+    # --------------------------------------------------------
+    # Actual delay between body segments
+    # --------------------------------------------------------
+
+    segment_delay = (
+        BODY_SPACING_CELLS *
+        time_per_cell
+    )
+
+
+    # --------------------------------------------------------
+    # Create every body segment
+    # --------------------------------------------------------
+
     for i in range(BODY_SEGMENTS):
 
+
         # ====================================================
-        # IMPORTANT:
+        # BODY DISTANCE FROM HEAD
         #
-        # POSITIVE BEGIN
-        #
-        # Each segment starts AFTER the previous segment.
-        #
-        # This makes the body follow the head instead of
-        # appearing to move backward.
+        # Segment 0 = immediately behind head
+        # Segment 21 = tail
         # ====================================================
 
-        delay = (
-            i *
-            BODY_SEGMENT_DELAY
+        distance = (
+            (i + 1)
+            * segment_delay
+        )
+
+
+        # ====================================================
+        # IMPORTANT TIMING
+        #
+        # The animation begins at a negative phase that
+        # corresponds to the body being BEHIND the head.
+        #
+        # This prevents the body from starting after the head.
+        # ====================================================
+
+        begin_time = (
+            -(
+                SNAKE_DURATION
+                - distance
+            )
         )
 
 
@@ -612,13 +681,13 @@ def create_body():
         # ====================================================
 
         radius = (
-            7.4 -
-            i * 0.08
+            7.4
+            - (i * 0.075)
         )
 
 
-        if radius < 5.7:
-            radius = 5.7
+        if radius < 5.8:
+            radius = 5.8
 
 
         # ====================================================
@@ -654,7 +723,7 @@ def create_body():
 
                 <animateMotion
                     dur="{SNAKE_DURATION}s"
-                    begin="{delay:.4f}s"
+                    begin="{begin_time:.5f}s"
                     repeatCount="indefinite"
                     calcMode="linear"
                     rotate="auto"
@@ -688,7 +757,7 @@ def create_head():
             cy="0"
             r="16"
             fill="{RED}"
-            opacity="0.12"
+            opacity="0.14"
         >
 
             <animateMotion
@@ -703,7 +772,7 @@ def create_head():
 
 
         <!-- ================================================
-             HEAD
+             MAIN HEAD
              ================================================ -->
 
         <circle
@@ -878,13 +947,9 @@ def create_svg():
 
 <svg
     xmlns="http://www.w3.org/2000/svg"
-
     width="100%"
-
     viewBox="0 0 {WIDTH} {HEIGHT}"
-
     role="img"
-
     aria-label="Monster GitHub contribution snake"
 >
 
@@ -996,11 +1061,15 @@ def create_svg():
 
 
 # ============================================================
-# WRITE SVG FILES
+# GENERATE SVG
 # ============================================================
 
 svg = create_svg()
 
+
+# ============================================================
+# OUTPUT FILES
+# ============================================================
 
 light_file = (
     OUTPUT_DIR /
@@ -1027,49 +1096,18 @@ dark_file.write_text(
 
 
 # ============================================================
-# FINAL LOG
+# FINAL STATUS
 # ============================================================
 
 print()
-
 print("==========================================")
 print("       MONSTER SNAKE GENERATED")
 print("==========================================")
-
-print(
-    "Cycle        :",
-    SNAKE_DURATION,
-    "seconds"
-)
-
-print(
-    "Body         :",
-    BODY_SEGMENTS,
-    "segments"
-)
-
-print(
-    "Segment gap  :",
-    BODY_SEGMENT_DELAY,
-    "seconds"
-)
-
-print(
-    "Burst        :",
-    BURST_DURATION,
-    "seconds"
-)
-
-print(
-    "Eating       : ENABLED"
-)
-
-print(
-    "Reset        : ENABLED"
-)
-
-print(
-    "Direction    : HEAD → TAIL"
-)
-
+print("Cycle        :", SNAKE_DURATION, "seconds")
+print("Body         :", BODY_SEGMENTS, "segments")
+print("Spacing      :", BODY_SPACING_CELLS, "cells")
+print("Burst        :", BURST_DURATION, "seconds")
+print("Eating       : ENABLED")
+print("Reset        : ENABLED")
+print("Direction    : FORWARD")
 print("==========================================")
